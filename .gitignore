@@ -136,7 +136,7 @@ ENV/
 env.bak/
 venv.bak/
 app2/
-.mp3
+app/static/audio/
 
 # Spyder project settings
 .spyderproject
