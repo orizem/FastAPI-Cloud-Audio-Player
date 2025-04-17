@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Audio Library</title>
+    <link rel="stylesheet" href="/static/css/music_player.css" />
+    <script src="/static/js/audio.js" defer></script>
+    <script src="/static/js/app.js" defer></script>
+  </head>
+
+  <body>
+    <div class="sidebar">
+      <div class="logo">
+        <a href="#">
+          <img src="/static/image/logo.png" alt="Logo" />
+        </a>
+      </div>
+
+      <div class="navigation">
+        <ul>
+          <li>
+            <a href="#">
+              <span class="fa fa-home"></span>
+              <span>Home</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="#">
+              <span class="fa fa-search"></span>
+              <span>Search</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="#">
+              <span class="fa fas fa-book"></span>
+              <span>Your Library</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="navigation">
+        <ul>
+          <li>
+            <a href="#">
+              <span class="fa fas fa-plus-square"></span>
+              <span>Create Playlist</span>
+            </a>
+          </li>
+
+          <li>
+            <a href="#">
+              <span class="fa fas fa-heart"></span>
+              <span>Liked Songs</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="policies">
+        <ul>
+          <li>
+            <a href="#">By Ori Tsemach</a>
+          </li>
+          <li>
+            <a href="#"></a>
+          </li>
+          <li>
+            <a href="#"></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="main-container">
+      <div class="topbar">
+        <div class="prev-next-buttons">
+          <button
+            type="button"
+            class="fa fas fa-chevron-left"
+            onclick="handlePrevPage(this)"
+          ></button>
+          <button
+            type="button"
+            class="fa fas fa-chevron-right"
+            onclick="handleNextPage(this)"
+          ></button>
+          <button id="pagination">{{ page }}</button>
+        </div>
+
+        <div class="navbar">
+          <ul>
+            <li>
+              <a href="#">Settings</a>
+            </li>
+          </ul>
+          <button type="button">Log In</button>
+        </div>
+      </div>
+
+      <div class="playlists">
+        <h2>Playlists</h2>
+
+        <div class="list">
+          {% for audio in audio_files %}
+          <div class="item">
+            <img
+              src="https://canto-wp-media.s3.amazonaws.com/app/uploads/2019/11/19191844/audio-file-types-36-768x704.jpg"
+            />
+            <div class="play">
+              <span
+                class="fa fa-play"
+                onclick="handlePlay(this)"
+                data-audio-id="{{ audio[0] | safe }}"
+              ></span>
+            </div>
+            <h4>{{ audio[0] | safe }}</h4>
+            <p>Text here...</p>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+
+    <div class="preview">
+      <div class="text">
+        <h6>Playing:</h6>
+        <audio id="audio_id" controls>
+          <source src="/api/audio/BBBBBBBB.mp3" type="audio/mpeg" />
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+    </div>
+
+    <script
+      src="https://kit.fontawesome.com/23cecef777.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

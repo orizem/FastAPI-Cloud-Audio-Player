@@ -1,0 +1,45 @@
+body {
+  font-family: "Segoe UI", sans-serif;
+  background-color: #f5f7fa;
+  color: #202124;
+  margin: 2rem;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+th,
+td {
+  padding: 1rem;
+  border-bottom: 1px solid #dadce0;
+}
+th {
+  background-color: #1a73e8;
+  color: white;
+}
+audio {
+  width: 100%;
+}
+
+
+/* General Audio Player Container Style */
+td {
+  padding: 10px;
+  text-align: center;
+}
+
+td audio {
+  width: 100%;
+  border-radius: 10px;
+  background-color: #333;
+  border: 2px solid #444;
+  padding: 5px;
+  transition: all 0.3s ease;
+}
+
+td audio:hover {
+  transform: scale(1.05);
+  border-color: #5e81f4;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
