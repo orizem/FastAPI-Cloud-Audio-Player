@@ -1,38 +1,52 @@
-// document.addEventListener("DOMContentLoaded", function () {
-//   const searchInput = document.getElementById("searchInput");
-//   searchInput.addEventListener("input", function () {
-//     const filter = this.value.toLowerCase();
-//     document.querySelectorAll("tbody tr").forEach((row) => {
-//       const text = row.textContent.toLowerCase();
-//       row.style.display = text.includes(filter) ? "" : "none";
-//     });
-//   });
-// });
+async function loadPage(page) {
+  const response = await fetch(`/${page}`);
+  const data = await response.json();
+
+  // Update the content with the new audio files
+  const audioList = document.getElementById("audio-list");
+  audioList.innerHTML = ""; // Clear current content
+
+  data.audio_files.forEach((audio) => {
+    audioList.innerHTML += `
+      <div class="item">
+      <img
+        src="https://canto-wp-media.s3.amazonaws.com/app/uploads/2019/11/19191844/audio-file-types-36-768x704.jpg"
+      />
+      <div class="play">
+        <span
+          class="fa fa-play"
+          onclick="handlePlay(this)"
+          data-audio-id="${audio}"
+        ></span>
+      </div>
+      <h4>${audio}</h4>
+      <p>Text here...</p>
+    </div>
+    `;
+  });
+
+  // Update pagination
+  const pagination = document.getElementById("pagination");
+  pagination.innerHTML = `Page ${data.page} of ${data.MAX_PAGE}`;
+  pagination.dataset.page = `${data.page}`;
+  pagination.dataset.maxPage = `${data.MAX_PAGE}`;
+}
 
 function handlePrevPage(el) {
-  const currentPath = window.location.pathname;
-  const match = currentPath.match(/^\/(\d+)$/);
-
-  if (match) {
-    const currentPage = parseInt(match[1]);
-    const prevPage = currentPage - 1 > 0 ? currentPage - 1 : 1;
-
-    window.location.href = `/${prevPage}`;
-  } else {
-    console.log("No page number found in the path.");
-  }
+  const pagination = document.getElementById("pagination");
+  const currentPage = parseInt(pagination.dataset.page);
+  const prevPage = currentPage - 1 > 0 ? currentPage - 1 : 1;
+  loadPage(prevPage);
 }
 
 function handleNextPage(el) {
-  const currentPath = window.location.pathname;
-  const match = currentPath.match(/^\/(\d+)$/);
-
-  if (match) {
-    const currentPage = parseInt(match[1]);
-    const nextPage = currentPage + 1;
-
-    window.location.href = `/${nextPage}`;
-  } else {
-    console.log("No page number found in the path.");
-  }
+  const pagination = document.getElementById("pagination");
+  const currentPage = parseInt(pagination.dataset.page);
+  const nextPage =
+    currentPage + 1 <= pagination.dataset.maxPage
+      ? currentPage + 1
+      : pagination.dataset.maxPage;
+  loadPage(nextPage);
 }
+
+loadPage(1);

@@ -103,32 +103,19 @@
       <div class="playlists">
         <h2>Playlists</h2>
 
-        <div class="list">
-          {% for audio in audio_files %}
-          <div class="item">
-            <img
-              src="https://canto-wp-media.s3.amazonaws.com/app/uploads/2019/11/19191844/audio-file-types-36-768x704.jpg"
-            />
-            <div class="play">
-              <span
-                class="fa fa-play"
-                onclick="handlePlay(this)"
-                data-audio-id="{{ audio[0] | safe }}"
-              ></span>
-            </div>
-            <h4>{{ audio[0] | safe }}</h4>
-            <p>Text here...</p>
-          </div>
-          {% endfor %}
+        <div class="list" id="audio-list">
         </div>
       </div>
+    </div>
+
+    <div id="pagination" data-page="1" data-max-page="1">
     </div>
 
     <div class="preview">
       <div class="text">
         <h6>Playing:</h6>
         <audio id="audio_id" controls>
-          <source src="/api/audio/BBBBBBBB.mp3" type="audio/mpeg" />
+          <source src="/api/audio/#" type="audio/mpeg" />
           Your browser does not support the audio element.
         </audio>
       </div>

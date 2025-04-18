@@ -21,9 +21,22 @@ app.include_router(audio_router.router)
 templates = Jinja2Templates(directory="app/templates")
 
 
+@app.get("/app")
+async def index(request: Request):
+    return templates.TemplateResponse(
+        "index.html",
+        {
+            "request": request,
+            "audio_files": [],
+            "page": 1,
+            "PAGE_SIZE": PAGE_SIZE,
+        },
+    )
+
+
 @app.get("/")
 async def home():
-    return RedirectResponse(url="/1", status_code=302)
+    return RedirectResponse(url="/app", status_code=302)
 
 
 @app.get("/{page}")
@@ -49,14 +62,4 @@ async def next_page(request: Request, page: int):
             (PAGE_SIZE, (page - 1) * PAGE_SIZE),
         )
         audio_files = await cursor.fetchall()
-
-    # Render the template with the retrieved data
-    return templates.TemplateResponse(
-        "index.html",
-        {
-            "request": request,
-            "audio_files": audio_files,
-            "page": page,
-            "PAGE_SIZE": PAGE_SIZE,
-        },
-    )
+    return {"audio_files": audio_files, "page": page, "MAX_PAGE": MAX_PAGE}
