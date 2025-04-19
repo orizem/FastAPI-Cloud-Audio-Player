@@ -105,9 +105,9 @@ const wrapper = document.getElementById("tag-input-wrapper");
 const input = document.getElementById("tag-input");
 const button = document.getElementById("add-tag-btn");
 
-function reloadPage() {
+function reloadPage(firstPage = false) {
   const pagination = document.getElementById("pagination");
-  const currentPage = parseInt(pagination.dataset.page);
+  const currentPage = firstPage ? 1 : parseInt(pagination.dataset.page);
   loadPage(currentPage);
 }
 
@@ -140,7 +140,7 @@ button.addEventListener("click", () => {
   });
 
   saveCurrentTags();
-  reloadPage();
+  reloadPage(true);
 });
 
 input.addEventListener("keydown", (e) => {
