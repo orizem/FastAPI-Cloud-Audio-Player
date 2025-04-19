@@ -23,6 +23,7 @@ audio_files = Table(
     metadata,
     Column("filename", String, primary_key=True),
     Column("content", LargeBinary),
+    Column("subtitles", String),
 )
 
 # Create FastAPI app
@@ -41,6 +42,20 @@ async def get_audio_files():
         {"id": row["filename"], "name": row["filename"]} for row in results
     ]
     return audio_files_list
+
+
+@router.get("/api/subtitles/{audio_name}")
+async def get_subtitles(audio_name: str):
+    query = audio_files.select().where(audio_files.c.filename == audio_name)
+    result = await database.fetch_one(query)
+    
+    print("=" * 45)
+    print(list(result))
+
+    if not result:
+        raise HTTPException(status_code=404, detail="Audio not found")
+
+    return result["subtitles"]
 
 
 @router.get("/api/audio/{audio_name}")

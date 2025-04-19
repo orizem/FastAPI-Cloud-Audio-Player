@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <title>Audio Library</title>
     <link rel="stylesheet" href="/static/css/music_player.css" />
-    <script src="/static/js/audio.js" defer></script>
-    <script src="/static/js/app.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs/loader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js"></script>
   </head>
 
   <body>
@@ -118,6 +118,9 @@
           <source src="/api/audio/#" type="audio/mpeg" />
           Your browser does not support the audio element.
         </audio>
+        <div class="editor-container">
+          <div id="editor" style="width:100%;height:500px;border:1px solid #ccc;"></div>
+        </div>
       </div>
     </div>
 
@@ -125,5 +128,7 @@
       src="https://kit.fontawesome.com/23cecef777.js"
       crossorigin="anonymous"
     ></script>
+    <script src="/static/js/app.js" defer></script>
+    <script src="/static/js/audio.js" defer></script>
   </body>
 </html>
