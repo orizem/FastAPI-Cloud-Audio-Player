@@ -287,7 +287,9 @@ body {
   padding: 15px 40px;
   display: flex;
   justify-content: space-between;
-  max-height: 590px;
+  height: 70px;
+  max-height: 610px;
+  min-height: 95px;
 }
 
 .preview h6,
@@ -369,4 +371,61 @@ body {
   border-radius: 50%;
   background-color: #b3b3b3;
   border: solid var(--bg-dot-grid) 1px;
+}
+
+.carousel-container {
+  /*width: 200px;  /* Adjust as needed */
+  height: 30px;  /* Adjust height for visibility */
+  overflow: hidden;
+  position: relative;
+}
+
+.hover-carousel {
+  display: inline-block;
+  white-space: nowrap;
+  padding-left: 0;    /* No padding, text starts from the left */
+  transition: transform 1s ease; /* Transition when hover starts */
+  position: relative;
+}
+
+.item:hover .hover-carousel {
+  animation: carousel 5s linear infinite; /* Animate on hover */
+}
+
+@keyframes carousel {
+  0% {
+    transform: translateX(50%); /* Start off-screen to the right */
+  }
+  100% {
+    transform: translateX(-100%); /* End off-screen to the left */
+  }
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+/* Style the tooltip text */
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: #fff;
+  font-weight: bold;
+  color: black;
+  text-align: center;
+  border-radius: 5px;
+  padding: 5px;
+  position: absolute;
+  bottom: 130px; /* Position the tooltip above the text */
+  left: 15px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+/* Show the tooltip text when hovering */
+.item:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
 }

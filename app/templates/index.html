@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="/static/css/music_player.css" />
     <script src="https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs/loader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
 
   <body>
@@ -79,13 +80,11 @@
         <div class="prev-next-buttons">
           <button
             type="button"
-            class="fa fas fa-chevron-left"
-            onclick="handlePrevPage(this)"
+            class="fa fas fa-chevron-left prev-btn"
           ></button>
           <button
             type="button"
-            class="fa fas fa-chevron-right"
-            onclick="handleNextPage(this)"
+            class="fa fas fa-chevron-right next-btn"
           ></button>
           <button id="pagination">{{ page }}</button>
         </div>
@@ -97,6 +96,35 @@
             </li>
           </ul>
           <button type="button">Log In</button>
+        </div>
+      </div>
+
+      <div class="w-full max-w-xl mx-auto mt-10">
+        <div
+          id="tag-input-wrapper"
+          class="flex flex-wrap items-center gap-2 px-3 py-2 border border-gray-300 rounded-full shadow-sm focus-within:ring-2 focus-within:ring-blue-400"
+        >
+          <!-- Tags will be injected here -->
+          <input
+            id="tag-input"
+            type="text"
+            placeholder="Type and press +"
+            class="flex-grow border-none outline-none bg-transparent text-white placeholder-gray-400 text-sm min-w-[100px]"
+          />
+          <button
+            id="add-tag-btn"
+            class="text-white bg-blue-500 hover:bg-blue-600 rounded-full px-3 py-1 text-sm font-semibold"
+          >
+            +
+          </button>
+          <button
+            class="text-blue-500 bg-white hover:bg-blue-300 rounded-full px-3 py-1 text-sm font-semibold"
+          >
+            <i
+              class="fa fa-search search-btn"
+              aria-hidden="true"
+            ></i>
+          </button>
         </div>
       </div>
 
@@ -114,10 +142,14 @@
       <div class="resize-handle">
         <div class="dot-grid">
           <div class="dot-row">
-            <div></div><div></div><div></div>
+            <div></div>
+            <div></div>
+            <div></div>
           </div>
           <div class="dot-row">
-            <div></div><div></div><div></div>
+            <div></div>
+            <div></div>
+            <div></div>
           </div>
         </div>
       </div>
@@ -141,7 +173,7 @@
       src="https://kit.fontawesome.com/23cecef777.js"
       crossorigin="anonymous"
     ></script>
-    <script src="/static/js/app.js" defer></script>
+    <script type="module" src="/static/js/app.js"></script>
     <script src="/static/js/audio.js" defer></script>
   </body>
 </html>

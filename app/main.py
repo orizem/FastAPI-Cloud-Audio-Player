@@ -1,8 +1,7 @@
 from math import ceil
 
 import aiosqlite
-from fastapi import FastAPI
-from fastapi.requests import Request
+from fastapi import FastAPI, Request
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -39,14 +38,25 @@ async def home():
     return RedirectResponse(url="/app", status_code=302)
 
 
-@app.get("/{page}")
-async def next_page(request: Request, page: int):
+@app.get("/page/{page}")
+async def get_page(request: Request, page: int):
+    tags = request.query_params.get("tags", default="")
+
+    # sort_order = request.query_params.get('sort_order', default='asc')
+    tag_list = tags.split(",") if tags else []
+    tags_query = ""
+
+    if tag_list:
+        tags_query = f"WHERE subtitles LIKE '%{tag_list[0]}%'"
+        for tag in tag_list[1:]:
+            tags_query += f" OR subtitles LIKE '%{tag}%'"
+
     # Connect to SQLite DB (aiosqlite for async support)
     async with aiosqlite.connect(DB_PATH) as conn:
         cursor = await conn.cursor()
 
         # Count total number of rows (audio files)
-        await cursor.execute("SELECT COUNT(*) FROM audio_files")
+        await cursor.execute(f"SELECT COUNT(*) FROM audio_files {tags_query}")
         total_documents = (await cursor.fetchone())[0]
 
         # Calculate the max page
@@ -58,7 +68,7 @@ async def next_page(request: Request, page: int):
 
         # Get the audio file names for the current page
         await cursor.execute(
-            "SELECT filename FROM audio_files LIMIT ? OFFSET ?",
+            f"SELECT filename FROM audio_files {tags_query} LIMIT ? OFFSET ?",
             (PAGE_SIZE, (page - 1) * PAGE_SIZE),
         )
         audio_files = await cursor.fetchall()
