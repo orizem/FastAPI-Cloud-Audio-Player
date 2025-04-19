@@ -125,7 +125,7 @@ celerybeat-schedule
 celerybeat.pid
 
 # db
-.db
+*.db
 
 # SageMath parsed files
 *.sage.py
