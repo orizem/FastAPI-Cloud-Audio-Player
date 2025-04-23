@@ -3,6 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <title>Audio Library</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+
     <link rel="stylesheet" href="/static/css/music_player.css" />
     <script src="https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs/loader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js"></script>
@@ -21,21 +23,21 @@
         <ul>
           <li>
             <a href="#">
-              <span class="fa fa-home"></span>
+              <span class="bi bi-house"></span>
               <span>Home</span>
             </a>
           </li>
 
           <li>
             <a href="#">
-              <span class="fa fa-search"></span>
+              <span class="bi bi-search"></span>
               <span>Search</span>
             </a>
           </li>
 
           <li>
             <a href="#">
-              <span class="fa fas fa-book"></span>
+              <span class="bi bi-book"></span>
               <span>Your Library</span>
             </a>
           </li>
@@ -46,14 +48,14 @@
         <ul>
           <li>
             <a href="#">
-              <span class="fa fas fa-plus-square"></span>
+              <span class="bi bi-plus-square"></span>
               <span>Create Playlist</span>
             </a>
           </li>
 
           <li>
             <a href="#">
-              <span class="fa fas fa-heart"></span>
+              <span class="bi bi-heart"></span>
               <span>Liked Songs</span>
             </a>
           </li>
@@ -65,12 +67,6 @@
           <li>
             <a href="#">By Ori Tsemach</a>
           </li>
-          <li>
-            <a href="#"></a>
-          </li>
-          <li>
-            <a href="#"></a>
-          </li>
         </ul>
       </div>
     </div>
@@ -80,11 +76,11 @@
         <div class="prev-next-buttons">
           <button
             type="button"
-            class="fa fas fa-chevron-left prev-btn"
+            class="bi bi-chevron-left prev-btn"
           ></button>
           <button
             type="button"
-            class="fa fas fa-chevron-right next-btn"
+            class="bi bi-chevron-right next-btn"
           ></button>
           <button id="pagination">{{ page }}</button>
         </div>
@@ -121,7 +117,7 @@
             class="text-blue-500 bg-white hover:bg-blue-300 rounded-full px-3 py-1 text-sm font-semibold"
           >
             <i
-              class="fa fa-search search-btn"
+              class="bi bi-search search-btn"
               aria-hidden="true"
             ></i>
           </button>
@@ -169,11 +165,10 @@
       </div>
     </div>
 
-    <script
-      src="https://kit.fontawesome.com/23cecef777.js"
-      crossorigin="anonymous"
-    ></script>
+    <!-- <script
+    src="https://kit.fontawesome.com/a076d05399.js"
+    crossorigin="anonymous"
+  ></script> -->
     <script type="module" src="/static/js/app.js"></script>
-    <script src="/static/js/audio.js" defer></script>
   </body>
 </html>
