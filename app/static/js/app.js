@@ -42,7 +42,7 @@ async function loadPage(page) {
   data.audio_files.forEach((audio) => {
     audioList.innerHTML += `
       <div class="item">
-      <img
+      <img class="img"
         src="https://canto-wp-media.s3.amazonaws.com/app/uploads/2019/11/19191844/audio-file-types-36-768x704.jpg"
       />
       <div class="play">
@@ -72,6 +72,14 @@ async function loadPage(page) {
   audioList.addEventListener("click", function (event) {
     if (event.target && event.target.classList.contains("play-btn")) {
       handleMedia(event.target, originalModel, modifiedModel);
+    }
+    
+    if (event.target && event.target.classList.contains("item")) {
+      handleMedia(event.target.querySelector(".play-btn"), originalModel, modifiedModel);
+    }
+    
+    if (event.target && event.target.classList.contains("img")) {
+      handleMedia(event.target.parentElement.querySelector(".play-btn"), originalModel, modifiedModel);
     }
   });
 }
