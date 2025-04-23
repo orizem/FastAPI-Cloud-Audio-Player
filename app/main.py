@@ -52,7 +52,7 @@ async def get_page(request: Request, page: int):
         for tag in tag_list:
             tag_conditions.append("subtitles LIKE ?")
             params.append(f"%{tag}%")
-        where_clauses.append(f"({' OR '.join(tag_conditions)})")
+        where_clauses.append(f"({' AND '.join(tag_conditions)})")
 
     where_clause = "WHERE " + " AND ".join(where_clauses)
 
