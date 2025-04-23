@@ -487,6 +487,12 @@ body {
   background-color: var(--bg-button);
 }
 
- #logo-img {
+#logo-img {
   border-radius: 25px 5px 5px 25px;
-} 
+}
+
+#waveCanvas {
+  width: 100%;
+  padding-right: 24px;
+  padding-bottom: 24px;
+}

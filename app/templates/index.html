@@ -12,6 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script type="module" src="/static/js/app.js"></script>
+    <script src="/static/js/wave.js"></script>
   </head>
 
   <body>
@@ -43,8 +44,17 @@
       <div class="policies">
         <ul>
           <li>
+            <canvas id="waveCanvas"></canvas>
+          </li>
+        </ul>
+      </div>
+
+      <div class="policies">
+        <ul>
+          <li>
             <a href="#">By Ori Tsemach</a>
           </li>
+          <li></li>
         </ul>
       </div>
     </div>
@@ -58,7 +68,6 @@
         </div>
 
         <div class="navbar">
-
           <button id="theme-btn" type="button">
             <i class="bi bi-sun"></i>
           </button>

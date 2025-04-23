@@ -6,6 +6,7 @@ import {
   loadCurrentAudioIdFromCache,
 } from "./localStorage.js";
 import { handleMedia } from "./audio.js";
+import "./wave.js";
 
 // Theme
 
