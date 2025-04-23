@@ -196,6 +196,7 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
   gap: 20px;
+  padding-top: 15px;
 }
 
 .playlists .list .item {
@@ -430,8 +431,29 @@ body {
   width: 100%;
 }
 
-#preview-header-container h6 {
+.playlists #playlist-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  border-bottom: 1px solid var(--text-total-matches);
+  padding-bottom: 5px;
+  border-radius: 10px;
+  border: 2px solid var(--text-total-matches);
+  color: var(--text-total-matches);
+  text-align: center;
+}
+
+.playlists #playlist-info h2 {
+  margin: 0 15px;
+  text-align: center;
+}
+
+#playlist-total {
   margin: 0;
+  padding: 10px;
+  color: var(--text-total-matches);
+  width: fit-content;
 }
 
 #verifyAudio {

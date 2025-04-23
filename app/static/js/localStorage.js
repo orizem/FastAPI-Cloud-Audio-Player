@@ -31,3 +31,15 @@ export function saveCurrentTags() {
   const tags = extractTags();
   saveTagsToCache(tags);
 }
+
+export function saveCurrentAudioIdToCache(audio_id) {
+  localStorage.setItem(
+    "current_audio_id_verification",
+    JSON.stringify(audio_id)
+  );
+}
+
+export function loadCurrentAudioIdFromCache() {
+  const cached = localStorage.getItem("current_audio_id_verification");
+  return cached ? JSON.parse(cached) : null;
+}

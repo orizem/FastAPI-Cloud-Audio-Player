@@ -25,6 +25,7 @@ export async function handleMedia(el, originalModel, modifiedModel) {
   if (isSameAudio) {
     if (audioElement.paused) {
       audioElement.play();
+      saveCurrentAudioIdToCache(audioId);
     } else {
       audioElement.pause();
       el.className = "bi bi-play-fill play-btn";

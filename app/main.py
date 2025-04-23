@@ -80,5 +80,6 @@ async def get_page(request: Request, page: int):
             "audio_files": [{"id": row[0], "filename": row[1]} for row in audio_files],
             "page": page,
             "MAX_PAGE": MAX_PAGE,
+            "total_documents": total_documents,
         }
     )

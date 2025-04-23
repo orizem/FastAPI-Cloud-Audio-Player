@@ -3,6 +3,7 @@ import {
   loadTagsFromCache,
   saveVerificationToCache,
   loadVerificationFromCache,
+  loadCurrentAudioIdFromCache,
 } from "./localStorage.js";
 import { handleMedia } from "./audio.js";
 
@@ -168,10 +169,27 @@ async function loadPage(page) {
     `;
   });
 
-  const currentPlaylist = document.querySelector(".playlists h2");
+  const audioId = loadCurrentAudioIdFromCache();
+  const audio = document.getElementById("audio_id");
+  let el = null;
+
+  if (audioId) {
+    el = document.querySelector(`.play-btn[data-audio-id="${audioId}"]`);
+
+    if (el) {
+      if (!audio.paused) {
+        el.classList.remove("bi-play-fill");
+        el.classList.add("bi-pause-fill");
+      }
+    }
+  }
+
+  const currentPlaylist = document.querySelector("#playlist-title");
+  const totalMatches = document.querySelector("#playlist-total");
 
   currentPlaylist.innerHTML =
-    savedVerified == 0 ? "Pending For verification" : "Verified";
+    savedVerified == 0 ? "Pending For verification:" : "Verified:";
+  totalMatches.innerHTML = `total matches: ${data.total_documents}`;
 
   // Update pagination
   const pagination = document.getElementById("pagination");
