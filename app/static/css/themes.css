@@ -29,7 +29,7 @@
   --text-divider: var(--color-4);
   --text-button: var(--color-1);
   --text-total-matches: var(--color-3);
-  --search-text: var(--color-3);
+  --text-search: var(--color-3);
 
   /* Accent and UI colors */
   --bg-dot-grid: var(--color-4);
@@ -40,6 +40,7 @@
   --dot-row-bg: var(--color-4);
   --tooltip-bg: var(--color-3);
   --tooltip-color: var(--color-1);
+  --page-buttons-border: var(--color-3);
 }
 
 /* LIGHT THEME */
@@ -69,7 +70,7 @@
   --text-divider: var(--color-4);
   --text-button: var(--color-1);
   --text-total-matches: var(--color-3);
-  --search-text: var(--color-3);
+  --text-search: var(--color-3);
 
   /* Accent and UI colors */
   --bg-dot-grid: var(--color-4);
@@ -80,4 +81,5 @@
   --dot-row-bg: var(--color-1);
   --tooltip-bg: var(--color-6);
   --tooltip-color: var(--color-1);
+  --page-buttons-border: var(--color-3);
 }

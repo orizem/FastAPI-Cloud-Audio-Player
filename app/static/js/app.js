@@ -286,10 +286,10 @@ function removeTag(el) {
 
 function createTag(tag, value) {
   tag.className =
-    "flex items-center bg-blue-100 text-blue-800 text-sm font-medium px-3 py-1 rounded-full";
+    "flex items-center bg-blue-100 text-sm font-medium px-3 py-1 rounded-full";
   tag.innerHTML = `
     ${value}
-    <button class="ml-2 text-blue-500 hover:text-blue-500 focus:outline-none remove-btn">×</button>
+    <button class="ml-2 focus:outline-none remove-btn">×</button>
   `;
 }
 
