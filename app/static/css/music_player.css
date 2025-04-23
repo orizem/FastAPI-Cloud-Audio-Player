@@ -184,9 +184,9 @@ body {
   color: var(--page-buttons-border) !important;
 }
 
-.topbar button:hover {
+/* .topbar button:hover {
   border: 2px solid var(--bg-button);
-}
+} */
 
 .playlists {
   padding: 20px 40px;
