@@ -486,3 +486,7 @@ body {
   color: var(--bg-primary);
   background-color: var(--bg-button);
 }
+
+ #logo-img {
+  border-radius: 25px 5px 5px 25px;
+} 
