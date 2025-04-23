@@ -57,13 +57,14 @@ unverifyBtn.addEventListener("click", async () => {
   if (!source) return;
 
   const audioName = source.src.split("/api/audio/")[1];
-  if (!audioName || audioName === "#") return;
+  const verification = await fetch(`/api/verified/${audioName}`);
+  const data = await verification.json();
+
+  if (!audioName || audioName === "#" || data === 1) return;
 
   try {
     const res = await fetch(`/api/verify/${audioName}`, { method: "POST" });
     if (!res.ok) throw new Error(`Failed: ${res.statusText}`);
-    const data = await res.json();
-    console.log("Verified:", data);
     reloadPage();
   } catch (err) {
     console.error("Error:", err);
