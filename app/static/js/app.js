@@ -23,7 +23,8 @@ const themeBtn = document.getElementById("theme-btn");
 
 // Toggle theme
 themeBtn.addEventListener("click", function () {
-  const current = document.documentElement.getAttribute("data-theme") || "light";
+  const current =
+    document.documentElement.getAttribute("data-theme") || "light";
   const next = current === "light" ? "dark" : "light";
 
   document.documentElement.setAttribute("data-theme", next);
@@ -90,14 +91,14 @@ unverifyBtn.addEventListener("click", async () => {
   const source = audio?.querySelector("source");
   if (!source) return;
 
-  const audioName = source.src.split("/api/audio/")[1];
-  const verification = await fetch(`/api/verified/${audioName}`);
+  const audioId = source.src.split("/api/audio/")[1];
+  const verification = await fetch(`/api/verified/${audioId}`);
   const data = await verification.json();
 
-  if (!audioName || audioName === "#" || data === 1) return;
+  if (!audioId || audioId === "#" || data === 1) return;
 
   try {
-    const res = await fetch(`/api/verify/${audioName}`, { method: "POST" });
+    const res = await fetch(`/api/verify/${audioId}`, { method: "POST" });
     if (!res.ok) throw new Error(`Failed: ${res.statusText}`);
     reloadPage();
   } catch (err) {
@@ -151,16 +152,17 @@ async function loadPage(page) {
       <div class="play">
         <span
           class="bi bi-play-fill play-btn"
-          data-audio-id="${audio}"
+          data-audio-id="${audio.id}"
+          data-audio-filename="${audio.filename}"
         ></span>
       </div>
       <div class="carousel-container">
       <h4 class="hover-carousel">
-      ${audio}
+      ${audio.filename}
       </h4>
       </div>
         <div class="tooltip">
-          <span class="tooltiptext">${audio}</span>
+          <span class="tooltiptext">${audio.filename}</span>
         </div>
       </div>
     `;
@@ -177,6 +179,22 @@ async function loadPage(page) {
   pagination.dataset.page = `${data.page}`;
   pagination.dataset.maxPage = `${data.MAX_PAGE}`;
 }
+
+document.addEventListener("click", function (event) {
+  if (event.target.classList.contains("play-btn")) {
+    // Reset all icons
+    document.querySelectorAll(".play-btn").forEach((el) => {
+      el.className = "bi bi-play-fill play-btn";
+    });
+
+    // Set clicked icon to pause
+    if (event.target.className === "bi bi-pause-fill play-btn")
+      event.target.className = "bi bi-play-fill play-btn";
+    else event.target.className = "bi bi-pause-fill play-btn";
+  }
+});
+
+// Move between pages
 
 function handlePrevPage(el) {
   const pagination = document.getElementById("pagination");

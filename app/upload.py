@@ -7,7 +7,8 @@ cursor = conn.cursor()
 cursor.execute(
     """
 CREATE TABLE IF NOT EXISTS audio_files (
-    filename TEXT PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    filename TEXT UNIQUE,
     content BLOB,
     subtitles TEXT,
     verified INTEGER

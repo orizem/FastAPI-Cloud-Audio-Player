@@ -29,7 +29,8 @@ metadata = MetaData()
 audio_files = Table(
     "audio_files",
     metadata,
-    Column("filename", String, primary_key=True),
+    Column("id", Integer, primary_key=True),
+    Column("filename", String, unique=True),
     Column("content", LargeBinary),
     Column("subtitles", String),
     Column("verified", Integer),
@@ -45,17 +46,17 @@ router = APIRouter()
 # Endpoint to get all audio files
 @router.get("/api/audio")
 async def get_audio_files():
-    query = audio_files.select()  # This should work now
+    query = audio_files.select()
     results = await database.fetch_all(query)
     audio_files_list = [
-        {"id": row["filename"], "name": row["filename"]} for row in results
+        {"id": row["id"], "name": row["filename"]} for row in results
     ]
     return audio_files_list
 
 
-@router.get("/api/subtitles/{audio_name}")
-async def get_subtitles(audio_name: str):
-    query = audio_files.select().where(audio_files.c.filename == audio_name)
+@router.get("/api/subtitles/{audio_id}")
+async def get_subtitles(audio_id: int):
+    query = audio_files.select().where(audio_files.c.id == audio_id)
     result = await database.fetch_one(query)
 
     if not result:
@@ -64,9 +65,9 @@ async def get_subtitles(audio_name: str):
     return result["subtitles"]
 
 
-@router.get("/api/verified/{audio_name}")
-async def get_verified(audio_name: str):
-    query = audio_files.select().where(audio_files.c.filename == audio_name)
+@router.get("/api/verified/{audio_id}")
+async def get_verified(audio_id: int):
+    query = audio_files.select().where(audio_files.c.id == audio_id)
     result = await database.fetch_one(query)
 
     if not result:
@@ -75,9 +76,9 @@ async def get_verified(audio_name: str):
     return result["verified"]
 
 
-@router.post("/api/verify/{audio_name}")
-async def post_verify(audio_name: str):
-    query = audio_files.select().where(audio_files.c.filename == audio_name)
+@router.post("/api/verify/{audio_id}")
+async def post_verify(audio_id: int):
+    query = audio_files.select().where(audio_files.c.id == audio_id)
     result = await database.fetch_one(query)
 
     if not result:
@@ -85,15 +86,15 @@ async def post_verify(audio_name: str):
 
     update_query = (
         audio_files.update()
-        .where(audio_files.c.filename == audio_name)
+        .where(audio_files.c.id == audio_id)
         .values(verified=1)
     )
     await database.execute(update_query)
 
 
-@router.get("/api/audio/{audio_name}")
-async def get_audio(audio_name: str, request: Request):
-    query = audio_files.select().where(audio_files.c.filename == audio_name)
+@router.get("/api/audio/{audio_id}")
+async def get_audio(audio_id: int, request: Request):
+    query = audio_files.select().where(audio_files.c.id == audio_id)
     result = await database.fetch_one(query)
 
     if not result:

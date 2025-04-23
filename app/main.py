@@ -2,7 +2,7 @@ from math import ceil
 
 import aiosqlite
 from fastapi import FastAPI, Request
-from fastapi.responses import RedirectResponse
+from fastapi.responses import RedirectResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
@@ -70,9 +70,15 @@ async def get_page(request: Request, page: int):
         # Paginated result
         paginated_params = params + [PAGE_SIZE, (page - 1) * PAGE_SIZE]
         await cursor.execute(
-            f"SELECT filename FROM audio_files {where_clause} LIMIT ? OFFSET ?", paginated_params
+            f"SELECT id, filename FROM audio_files {where_clause} LIMIT ? OFFSET ?",
+            paginated_params,
         )
         audio_files = await cursor.fetchall()
 
-    return {"audio_files": audio_files, "page": page, "MAX_PAGE": MAX_PAGE}
-
+    return JSONResponse(
+        {
+            "audio_files": [{"id": row[0], "filename": row[1]} for row in audio_files],
+            "page": page,
+            "MAX_PAGE": MAX_PAGE,
+        }
+    )
