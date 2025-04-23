@@ -33,6 +33,13 @@ require(["vs/editor/editor.main"], function () {
   });
 });
 
+const editorContainer = document.getElementById("editor");
+editorContainer.style.width = "100%";
+editorContainer.style.height = "500px";
+editorContainer.style.border = "1px solid #ccc";
+
+// Verified items
+
 const unverifyBtn = document.getElementById("verifyAudio");
 const verifiedNavBtn = document.getElementById("verified-btn");
 const unverifiedNavBtn = document.getElementById("unverified-btn");
