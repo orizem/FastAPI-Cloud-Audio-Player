@@ -457,6 +457,7 @@ body {
   border: 2px solid var(--text-total-matches);
   color: var(--text-total-matches);
   text-align: center;
+  background-color: rgba(var(--text-total-matches-rgb), 0.2);
 }
 
 .playlists #playlist-info h2 {

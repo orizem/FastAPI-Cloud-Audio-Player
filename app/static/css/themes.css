@@ -41,6 +41,7 @@
   --tooltip-bg: var(--color-3);
   --tooltip-color: var(--color-1);
   --page-buttons-border: var(--color-3);
+  --text-total-matches-rgb: 241, 245, 249;
 }
 
 /* LIGHT THEME */
@@ -82,4 +83,5 @@
   --tooltip-bg: var(--color-6);
   --tooltip-color: var(--color-1);
   --page-buttons-border: var(--color-3);
+  --text-total-matches-rgb: 15, 23, 42;
 }
