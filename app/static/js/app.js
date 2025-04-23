@@ -1,4 +1,33 @@
 import { saveCurrentTags, loadTagsFromCache } from "./localStorage.js";
+import { handleMedia } from "./audio.js";
+
+
+// Text Compare
+let originalModel;
+let modifiedModel;
+
+require.config({
+  paths: { vs: "https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs" },
+});
+
+require(["vs/editor/editor.main"], function () {
+  originalModel = monaco.editor.createModel("", "text/plain");
+  modifiedModel = monaco.editor.createModel("", "text/plain");
+
+  const diffEditor = monaco.editor.createDiffEditor(
+    document.getElementById("editor"),
+    {
+      theme: "vs",
+      renderSideBySide: true,
+      automaticLayout: true,
+    }
+  );
+
+  diffEditor.setModel({
+    original: originalModel,
+    modified: modifiedModel,
+  });
+});
 
 async function loadPage(page) {
   const savedTags = loadTagsFromCache();
@@ -18,7 +47,7 @@ async function loadPage(page) {
       />
       <div class="play">
         <span
-          class="fa fa-play play-btn"
+          class="bi bi-play-fill play-btn"
           data-audio-id="${audio}"
         ></span>
       </div>
@@ -42,7 +71,7 @@ async function loadPage(page) {
 
   audioList.addEventListener("click", function (event) {
     if (event.target && event.target.classList.contains("play-btn")) {
-      handlePlay(event.target);
+      handleMedia(event.target, originalModel, modifiedModel);
     }
   });
 }
@@ -171,5 +200,6 @@ document.querySelector(".search-btn").addEventListener("click", function () {
   // handleSearch(this);
   console.log("test");
 });
+
 
 loadPage(1);

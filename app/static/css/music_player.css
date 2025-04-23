@@ -65,20 +65,20 @@ body {
   color: var(--text-primary);
 }
 
-.sidebar .navigation ul li a:hover .fa,
-.sidebar .navigation ul li a:active .fa,
-.sidebar .navigation ul li a:focus .fa {
+.sidebar .navigation ul li a:hover .bi,
+.sidebar .navigation ul li a:active .bi,
+.sidebar .navigation ul li a:focus .bi {
   color: var(--text-secondary);
 }
 
-.sidebar .navigation ul li .fa {
+.sidebar .navigation ul li .bi {
   font-size: 20px;
   margin-right: 10px;
 }
 
-.sidebar .navigation ul li a:hover .fa:hover,
-.sidebar .navigation ul li a:hover .fa:active,
-.sidebar .navigation ul li a:hover .fa:focus {
+.sidebar .navigation ul li a:hover .bi:hover,
+.sidebar .navigation ul li a:hover .bi:active,
+.sidebar .navigation ul li a:hover .bi:focus {
   color: var(--text-primary);
 }
 
@@ -241,7 +241,7 @@ body {
   position: relative;
 }
 
-.playlists .list .item .play .fa {
+.playlists .list .item .play .bi {
   position: absolute;
   right: 10px;
   top: -60px;
@@ -252,7 +252,7 @@ body {
   transition: all ease 0.4s;
 }
 
-.playlists .list .item:hover .play .fa {
+.playlists .list .item:hover .play .bi {
   opacity: 1;
   transform: translateY(-20px);
 }
