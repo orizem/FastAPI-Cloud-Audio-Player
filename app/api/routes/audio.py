@@ -4,7 +4,15 @@ from io import BytesIO
 from databases import Database
 from fastapi import APIRouter, FastAPI
 from fastapi.responses import StreamingResponse, FileResponse
-from sqlalchemy import Column, LargeBinary, MetaData, String, Table, create_engine
+from sqlalchemy import (
+    Column,
+    LargeBinary,
+    MetaData,
+    String,
+    Integer,
+    Table,
+    create_engine,
+)
 from sqlalchemy.orm import sessionmaker
 
 from fastapi import Request, Response, HTTPException
@@ -24,6 +32,7 @@ audio_files = Table(
     Column("filename", String, primary_key=True),
     Column("content", LargeBinary),
     Column("subtitles", String),
+    Column("verified", Integer),
 )
 
 # Create FastAPI app
@@ -48,14 +57,38 @@ async def get_audio_files():
 async def get_subtitles(audio_name: str):
     query = audio_files.select().where(audio_files.c.filename == audio_name)
     result = await database.fetch_one(query)
-    
-    print("=" * 45)
-    print(list(result))
 
     if not result:
-        raise HTTPException(status_code=404, detail="Audio not found")
+        raise HTTPException(status_code=404, detail="Subtitles not found")
 
     return result["subtitles"]
+
+
+@router.get("/api/verified/{audio_name}")
+async def get_verified(audio_name: str):
+    query = audio_files.select().where(audio_files.c.filename == audio_name)
+    result = await database.fetch_one(query)
+
+    if not result:
+        raise HTTPException(status_code=404, detail="Verified not found")
+
+    return result["verified"]
+
+
+@router.post("/api/verify/{audio_name}")
+async def post_verify(audio_name: str):
+    query = audio_files.select().where(audio_files.c.filename == audio_name)
+    result = await database.fetch_one(query)
+
+    if not result:
+        raise HTTPException(status_code=404, detail="Verified not found")
+
+    update_query = (
+        audio_files.update()
+        .where(audio_files.c.filename == audio_name)
+        .values(verified=1)
+    )
+    await database.execute(update_query)
 
 
 @router.get("/api/audio/{audio_name}")

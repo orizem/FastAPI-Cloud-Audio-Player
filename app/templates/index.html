@@ -20,44 +20,20 @@
 
       <div class="navigation">
         <ul>
-          <li>
+          <li id="unverified-btn">
             <a href="#">
               <span class="bi bi-house"></span>
               <span>Home</span>
             </a>
           </li>
 
-          <li>
+          <li id="verified-btn">
             <a href="#">
               <span class="bi bi-search"></span>
-              <span>Search</span>
+              <span>Verified</span>
             </a>
           </li>
 
-          <li>
-            <a href="#">
-              <span class="bi bi-book"></span>
-              <span>Your Library</span>
-            </a>
-          </li>
-        </ul>
-      </div>
-
-      <div class="navigation">
-        <ul>
-          <li>
-            <a href="#">
-              <span class="bi bi-plus-square"></span>
-              <span>Create Playlist</span>
-            </a>
-          </li>
-
-          <li>
-            <a href="#">
-              <span class="bi bi-heart"></span>
-              <span>Liked Songs</span>
-            </a>
-          </li>
         </ul>
       </div>
 
@@ -150,9 +126,12 @@
       </div>
 
       <div class="text">
-        <h6>Playing:</h6>
+        <div  style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+          <h6 style="margin: 0;">Playing:</h6>
+          <button id="verifyAudio" style="padding:3px 10px; margin:0; margin-bottom:5px; font-size: 13px;">Verify</button>
+        </div>
         <audio id="audio_id" controls>
-          <source src="/api/audio/#" type="audio/mpeg" />
+          <source id="src_id" src="/api/audio/#" type="audio/mpeg" />
           Your browser does not support the audio element.
         </audio>
         <div class="editor-container">

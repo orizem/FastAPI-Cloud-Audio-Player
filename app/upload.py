@@ -9,7 +9,8 @@ cursor.execute(
 CREATE TABLE IF NOT EXISTS audio_files (
     filename TEXT PRIMARY KEY,
     content BLOB,
-    subtitles TEXT
+    subtitles TEXT,
+    verified INTEGER
 )
 """
 )
@@ -25,6 +26,7 @@ for filename in [f for f in os.listdir(_dir) if f.endswith(".mp3")]:
             "filename": filename,
             "content": content,
             "subtitles": "",
+            "verified": 0,
         }
 
 for filename in [f for f in os.listdir(_dir) if f.endswith(".txt")]:
@@ -39,8 +41,8 @@ for audio_key in audio_items.keys():
     subtitles = audio_items[audio_key]["subtitles"]
 
     cursor.execute(
-        "INSERT OR REPLACE INTO audio_files (filename, content, subtitles) VALUES (?, ?, ?)",
-        (filename, content, subtitles),
+        "INSERT OR REPLACE INTO audio_files (filename, content, subtitles, verified) VALUES (?, ?, ?, ?)",
+        (filename, content, subtitles, 0),
     )
 conn.commit()
 conn.close()

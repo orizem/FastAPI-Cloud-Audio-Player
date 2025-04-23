@@ -1,6 +1,10 @@
-import { saveCurrentTags, loadTagsFromCache } from "./localStorage.js";
+import {
+  saveCurrentTags,
+  loadTagsFromCache,
+  saveVerificationToCache,
+  loadVerificationFromCache,
+} from "./localStorage.js";
 import { handleMedia } from "./audio.js";
-
 
 // Text Compare
 let originalModel;
@@ -31,8 +35,11 @@ require(["vs/editor/editor.main"], function () {
 
 async function loadPage(page) {
   const savedTags = loadTagsFromCache();
+  const savedVerified = loadVerificationFromCache();
   const tags = savedTags.join(",");
-  const response = await fetch(`/page/${page}?tags=${tags}`);
+  const response = await fetch(
+    `/page/${page}?tags=${tags}&verified=${savedVerified}`
+  );
   const data = await response.json();
 
   // Update the content with the new audio files
@@ -63,6 +70,53 @@ async function loadPage(page) {
     `;
   });
 
+  const verifiedNavBtn = document.getElementById("verified-btn");
+  const unverifiedNavBtn = document.getElementById("unverified-btn");
+  const unverifyBtn = document.getElementById("verifyAudio");
+
+  verifiedNavBtn.addEventListener("click", function (event) {
+    if (event.target) {
+      saveVerificationToCache(1);
+      reloadPage(true);
+    }
+  });
+
+  unverifiedNavBtn.addEventListener("click", function (event) {
+    if (event.target) {
+      saveVerificationToCache(0);
+      reloadPage(true);
+    }
+  });
+
+  unverifyBtn.addEventListener("click", async function (event) {
+    if (event.target) {
+      const audio = document.getElementById("audio_id");
+      const audioName = audio
+        .querySelector("source")
+        .src.split("/api/audio/")[1];
+
+      if (audioName != "#") {
+        await fetch(`/api/verify/${audioName}`, {
+          method: "POST",
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(`Failed to verify: ${response.statusText}`);
+            }
+            return response.json();
+          })
+          .then((data) => {
+            console.log("Verification successful:", data);
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+          });
+
+        reloadPage();
+      }
+    }
+  });
+
   // Update pagination
   const pagination = document.getElementById("pagination");
   pagination.innerHTML = `Page ${data.page} of ${data.MAX_PAGE}`;
@@ -73,13 +127,21 @@ async function loadPage(page) {
     if (event.target && event.target.classList.contains("play-btn")) {
       handleMedia(event.target, originalModel, modifiedModel);
     }
-    
+
     if (event.target && event.target.classList.contains("item")) {
-      handleMedia(event.target.querySelector(".play-btn"), originalModel, modifiedModel);
+      handleMedia(
+        event.target.querySelector(".play-btn"),
+        originalModel,
+        modifiedModel
+      );
     }
-    
+
     if (event.target && event.target.classList.contains("img")) {
-      handleMedia(event.target.parentElement.querySelector(".play-btn"), originalModel, modifiedModel);
+      handleMedia(
+        event.target.parentElement.querySelector(".play-btn"),
+        originalModel,
+        modifiedModel
+      );
     }
   });
 }
@@ -208,6 +270,5 @@ document.querySelector(".search-btn").addEventListener("click", function () {
   // handleSearch(this);
   console.log("test");
 });
-
 
 loadPage(1);
