@@ -16,7 +16,7 @@ body {
   top: 0;
   bottom: 0;
   width: 196px;
-  background-color: var(--bg-secondary);
+  background-color: var(--bg-card);
   padding: 24px;
 }
 
@@ -187,7 +187,7 @@ body {
 }
 
 .playlists h2 {
-  color: var(--text-primary);
+  color: var(--text-total-matches);
   font-size: 22px;
   margin-bottom: 20px;
 }
@@ -211,12 +211,21 @@ body {
 
 .playlists .list .item:hover {
   background-color: var(--bg-hover);
+  color: var(--bg-primary);
+}
+
+.playlists .list .item:hover h4{
+  color: var(--bg-primary);
 }
 
 .playlists .list .item img {
   width: 100%;
   border-radius: 6px;
   margin-bottom: 10px;
+}
+
+.search-text {
+  color: var(--search-text);
 }
 
 .playlists .list .item .play {
