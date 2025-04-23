@@ -269,6 +269,32 @@ document.addEventListener("mouseup", () => {
   }
 });
 
+handle.addEventListener("touchstart", (e) => {
+  isResizing = true;
+  document.body.style.cursor = "ns-resize";
+  e.preventDefault(); // prevent scrolling while resizing
+});
+
+document.addEventListener("touchmove", (e) => {
+  if (!isResizing) return;
+  const touch = e.touches[0];
+  const windowHeight = window.innerHeight;
+  const newHeight = windowHeight - touch.clientY;
+  preview.style.height = `${newHeight}px`;
+  preview.style.top = "auto";
+  preview.style.bottom = "0";
+  preview.style.position = "fixed";
+  e.preventDefault(); // prevent default scrolling
+}, { passive: false });
+
+document.addEventListener("touchend", () => {
+  if (isResizing) {
+    isResizing = false;
+    document.body.style.cursor = "default";
+  }
+});
+
+
 const wrapper = document.getElementById("tag-input-wrapper");
 const input = document.getElementById("tag-input");
 const button = document.getElementById("add-tag-btn");
