@@ -3,7 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <title>Audio Library</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
     <link rel="stylesheet" href="/static/css/music_player.css" />
     <script src="https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs/loader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js"></script>
@@ -34,7 +37,6 @@
               <span>Verified</span>
             </a>
           </li>
-
         </ul>
       </div>
 
@@ -50,14 +52,8 @@
     <div class="main-container">
       <div class="topbar">
         <div class="prev-next-buttons">
-          <button
-            type="button"
-            class="bi bi-chevron-left prev-btn"
-          ></button>
-          <button
-            type="button"
-            class="bi bi-chevron-right next-btn"
-          ></button>
+          <button type="button" class="bi bi-chevron-left prev-btn"></button>
+          <button type="button" class="bi bi-chevron-right next-btn"></button>
           <button id="pagination">{{ page }}</button>
         </div>
 
@@ -67,7 +63,7 @@
               <a href="#">Settings</a>
             </li>
           </ul>
-          <button type="button">Log In</button>
+          <button id="theme-btn" type="button"><i class="bi bi-sun"></i></button>
         </div>
       </div>
 
@@ -92,10 +88,7 @@
           <button
             class="text-blue-500 bg-white hover:bg-blue-300 rounded-full px-3 py-1 text-sm font-semibold"
           >
-            <i
-              class="bi bi-search search-btn"
-              aria-hidden="true"
-            ></i>
+            <i class="bi bi-search search-btn" aria-hidden="true"></i>
           </button>
         </div>
       </div>
@@ -136,12 +129,12 @@
           Your browser does not support the audio element.
         </audio>
         <div class="editor-container">
-          <div
-            id="editor"
-           
-          ></div>
+          <div id="editor"></div>
         </div>
       </div>
     </div>
+    <script>
+      document.documentElement.setAttribute("data-theme", "light");
+    </script>
   </body>
 </html>

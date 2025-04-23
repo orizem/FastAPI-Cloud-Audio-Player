@@ -1,23 +1,4 @@
-:root {
-  --bg-primary: #121212;
-  --bg-secondary: #000000;
-  --bg-tertiary: #101010;
-  --bg-card: #181818;
-  --bg-hover: #636363;
-  --bg-button: #ffffff;
-  --bg-button-hover: #f2f2f2;
-  --bg-play: #50cff5;
-  --bg-gradient: linear-gradient(to right, #252525, var(--bg-play));
-
-  --text-primary: #ffffff;
-  --text-secondary: #b3b3b3;
-  --text-muted: #989898;
-  --text-divider: #636363;
-  --text-button: #000000;
-  --bg-dot-grid: #5f5f5f;
-
-  --font-family: "Montserrat", sans-serif;
-}
+@import url("themes.css");
 
 * {
   padding: 0;
@@ -128,7 +109,7 @@ body {
   border-radius: 100%;
   font-size: 18px;
   border: 0px;
-  background-color: #090909;
+  background-color: var(--topbar-bg-color);
   margin-right: 10px;
 }
 
@@ -289,7 +270,10 @@ body {
   justify-content: space-between;
   height: 70px;
   max-height: 610px;
-  min-height: 95px;
+  min-height: 108px;
+
+  box-shadow: 0px -3px 30px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
 }
 
 .preview h6,
@@ -315,7 +299,10 @@ body {
 
 .preview audio {
   width: 100%;
-  padding-bottom: 10px;
+  margin-bottom: 10px;
+  border-radius: 25px;
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
 }
 
 .preview button {
@@ -332,7 +319,7 @@ body {
 .editor {
   width: 100%;
   height: 500px;
-  border: 1px solid #ccc;
+  border: 1px solid var(--editor-border);
 }
 
 .editor-container {
@@ -344,7 +331,7 @@ body {
 .resize-handle {
   height: 6px;
   cursor: ns-resize;
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--resize-bg);
   margin: -15px -40px 10px; /* compensate for .preview padding */
   position: relative;
   z-index: 2;
@@ -357,7 +344,7 @@ body {
   flex-direction: column;
   gap: 4px; /* vertical space between rows */
   transform: translateY(-11px) translateX(-32px);
-  background-color: #ddd; /* background around the grid */
+  background-color: var(--dot-bg); /* background around the grid */
   padding: 4px 0px; /* spacing around the dots */
   border-radius: 4px; /* optional: rounded corners */
   margin-left: auto;
@@ -375,7 +362,7 @@ body {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background-color: #b3b3b3;
+  background-color: var(--dot-row-bg);
   border: solid var(--bg-dot-grid) 1px;
 }
 
@@ -417,9 +404,9 @@ body {
 .tooltip .tooltiptext {
   visibility: hidden;
   width: 120px;
-  background-color: #fff;
+  background-color: var(--tooltip-bg);
   font-weight: bold;
-  color: black;
+  color: var(--tooltip-color);
   text-align: center;
   border-radius: 5px;
   padding: 5px;
