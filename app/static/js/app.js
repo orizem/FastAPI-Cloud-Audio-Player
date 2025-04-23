@@ -33,6 +33,67 @@ require(["vs/editor/editor.main"], function () {
   });
 });
 
+const unverifyBtn = document.getElementById("verifyAudio");
+const verifiedNavBtn = document.getElementById("verified-btn");
+const unverifiedNavBtn = document.getElementById("unverified-btn");
+
+verifiedNavBtn.addEventListener("click", function (event) {
+  if (event.target) {
+    saveVerificationToCache(1);
+    reloadPage(true);
+  }
+});
+
+unverifiedNavBtn.addEventListener("click", function (event) {
+  if (event.target) {
+    saveVerificationToCache(0);
+    reloadPage(true);
+  }
+});
+
+unverifyBtn.addEventListener("click", async () => {
+  const audio = document.getElementById("audio_id");
+  const source = audio?.querySelector("source");
+  if (!source) return;
+
+  const audioName = source.src.split("/api/audio/")[1];
+  if (!audioName || audioName === "#") return;
+
+  try {
+    const res = await fetch(`/api/verify/${audioName}`, { method: "POST" });
+    if (!res.ok) throw new Error(`Failed: ${res.statusText}`);
+    const data = await res.json();
+    console.log("Verified:", data);
+    reloadPage();
+  } catch (err) {
+    console.error("Error:", err);
+  }
+});
+
+const audioList = document.getElementById("audio-list");
+
+audioList.addEventListener("click", function (event) {
+  if (event.target && event.target.classList.contains("play-btn")) {
+    handleMedia(event.target, originalModel, modifiedModel);
+  }
+
+  if (event.target && event.target.classList.contains("item")) {
+    handleMedia(
+      event.target.querySelector(".play-btn"),
+      originalModel,
+      modifiedModel
+    );
+  }
+
+  if (event.target && event.target.classList.contains("img")) {
+    handleMedia(
+      event.target.parentElement.querySelector(".play-btn"),
+      originalModel,
+      modifiedModel
+    );
+  }
+});
+
 async function loadPage(page) {
   const savedTags = loadTagsFromCache();
   const savedVerified = loadVerificationFromCache();
@@ -70,80 +131,16 @@ async function loadPage(page) {
     `;
   });
 
-  const verifiedNavBtn = document.getElementById("verified-btn");
-  const unverifiedNavBtn = document.getElementById("unverified-btn");
-  const unverifyBtn = document.getElementById("verifyAudio");
+  const currentPlaylist = document.querySelector(".playlists h2");
 
-  verifiedNavBtn.addEventListener("click", function (event) {
-    if (event.target) {
-      saveVerificationToCache(1);
-      reloadPage(true);
-    }
-  });
-
-  unverifiedNavBtn.addEventListener("click", function (event) {
-    if (event.target) {
-      saveVerificationToCache(0);
-      reloadPage(true);
-    }
-  });
-
-  unverifyBtn.addEventListener("click", async function (event) {
-    if (event.target) {
-      const audio = document.getElementById("audio_id");
-      const audioName = audio
-        .querySelector("source")
-        .src.split("/api/audio/")[1];
-
-      if (audioName != "#") {
-        await fetch(`/api/verify/${audioName}`, {
-          method: "POST",
-        })
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error(`Failed to verify: ${response.statusText}`);
-            }
-            return response.json();
-          })
-          .then((data) => {
-            console.log("Verification successful:", data);
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-          });
-
-        reloadPage();
-      }
-    }
-  });
+  currentPlaylist.innerHTML =
+    savedVerified == 0 ? "Pending For verification" : "Verified";
 
   // Update pagination
   const pagination = document.getElementById("pagination");
   pagination.innerHTML = `Page ${data.page} of ${data.MAX_PAGE}`;
   pagination.dataset.page = `${data.page}`;
   pagination.dataset.maxPage = `${data.MAX_PAGE}`;
-
-  audioList.addEventListener("click", function (event) {
-    if (event.target && event.target.classList.contains("play-btn")) {
-      handleMedia(event.target, originalModel, modifiedModel);
-    }
-
-    if (event.target && event.target.classList.contains("item")) {
-      handleMedia(
-        event.target.querySelector(".play-btn"),
-        originalModel,
-        modifiedModel
-      );
-    }
-
-    if (event.target && event.target.classList.contains("img")) {
-      handleMedia(
-        event.target.parentElement.querySelector(".play-btn"),
-        originalModel,
-        modifiedModel
-      );
-    }
-  });
 }
 
 function handlePrevPage(el) {

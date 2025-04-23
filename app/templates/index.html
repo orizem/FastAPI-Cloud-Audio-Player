@@ -8,6 +8,7 @@
     <script src="https://cdn.jsdelivr.net/npm/monaco-editor@latest/min/vs/loader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module" src="/static/js/app.js"></script>
   </head>
 
   <body>
@@ -29,7 +30,7 @@
 
           <li id="verified-btn">
             <a href="#">
-              <span class="bi bi-search"></span>
+              <span class="bi bi-check-circle-fill"></span>
               <span>Verified</span>
             </a>
           </li>
@@ -100,7 +101,7 @@
       </div>
 
       <div class="playlists">
-        <h2>Playlists</h2>
+        <h2>Pending for verification</h2>
 
         <div class="list" id="audio-list"></div>
       </div>
@@ -142,6 +143,5 @@
         </div>
       </div>
     </div>
-    <script type="module" src="/static/js/app.js"></script>
   </body>
 </html>
