@@ -52,6 +52,7 @@
   --color-4: #1e293b;
   --color-5: #38bdf8;
   --color-6: #0ea5e9;
+  --color-7: #505050;
 
   /* Background colors */
   --bg-primary: var(--color-1);
@@ -66,7 +67,7 @@
 
   /* Text colors */
   --text-primary: var(--color-4);
-  --text-secondary: var(--color-4);
+  --text-secondary: var(--color-7);
   --text-muted: var(--color-4);
   --text-divider: var(--color-4);
   --text-button: var(--color-1);
@@ -82,6 +83,6 @@
   --dot-row-bg: var(--color-1);
   --tooltip-bg: var(--color-6);
   --tooltip-color: var(--color-1);
-  --page-buttons-border: var(--color-3);
+  --page-buttons-border: var(--color-7);
   --text-total-matches-rgb: 15, 23, 42;
 }

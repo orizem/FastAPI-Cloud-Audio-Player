@@ -46,12 +46,6 @@ body {
   color: var(--text-primary);
 }
 
-.sidebar .navigation ul li a:hover .bi,
-.sidebar .navigation ul li a:active .bi,
-.sidebar .navigation ul li a:focus .bi {
-  color: var(--text-secondary);
-}
-
 .sidebar .navigation ul li .bi {
   font-size: 20px;
   margin-right: 10px;
@@ -120,7 +114,7 @@ body {
   min-width: 34px;
   padding: 0 5px;
   border-radius: 15px;
-  border: 2px solid var(--bg-button);
+  border: 1px solid var(--page-buttons-border);
 }
 
 .topbar .navbar {
@@ -149,7 +143,7 @@ body {
 .topbar .navbar ul li a:hover,
 .topbar .navbar ul li a:active,
 .topbar .navbar ul li a:focus {
-  color: var(--text-primary);
+  /* color: var(--text-primary); */
   font-size: 15px;
 }
 
@@ -180,7 +174,7 @@ body {
 
 .next-btn,
 .prev-btn {
-  border: 2px solid var(--page-buttons-border) !important;
+  border: 1px solid var(--page-buttons-border) !important;
   color: var(--page-buttons-border) !important;
 }
 

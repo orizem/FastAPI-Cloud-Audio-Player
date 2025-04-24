@@ -36,13 +36,18 @@ document.addEventListener("click", function (event) {
   if (event.target.classList.contains("play-btn")) {
     // Reset all icons
     document.querySelectorAll(".play-btn").forEach((el) => {
-      el.className = "bi bi-play-fill play-btn";
+      el.classList.remove("bi-pause-fill");
+      el.classList.add("bi-play-fill");
     });
 
     // Set clicked icon to pause
-    if (event.target.className === "bi bi-pause-fill play-btn")
-      event.target.className = "bi bi-play-fill play-btn";
-    else event.target.className = "bi bi-pause-fill play-btn";
+    if (event.target.className.contains("bi-pause-fill")) {
+      event.target.classList.remove("bi-pause-fill");
+      event.target.classList.add("bi-play-fill");
+    } else {
+      event.target.classList.remove("bi-play-fill");
+      event.target.classList.add("bi-pause-fill");
+    }
   }
 });
 

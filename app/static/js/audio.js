@@ -28,7 +28,8 @@ export async function handleMedia(el, originalModel, modifiedModel) {
       saveCurrentAudioIdToCache(audioId);
     } else {
       audioElement.pause();
-      el.className = "bi bi-play-fill play-btn";
+      el.classList.remove("bi-pause-fill");
+      el.classList.add("bi-play-fill");
     }
   } else {
     // Load and play new audio
@@ -43,7 +44,11 @@ export async function handleMedia(el, originalModel, modifiedModel) {
   }
 
   // Update play/pause button icon
-  el.className = audioElement.paused
-    ? "bi bi-play-fill play-btn"
-    : "bi bi-pause-fill play-btn";
+  if (audioElement.paused) {
+    el.classList.remove("bi-pause-fill");
+    el.classList.add("bi-play-fill");
+  } else {
+    el.classList.remove("bi-play-fill");
+    el.classList.add("bi-pause-fill");
+  }
 }
