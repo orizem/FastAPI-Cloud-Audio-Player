@@ -1,25 +1,21 @@
-import base64
-from io import BytesIO
+import os
 
 from databases import Database
-from fastapi import APIRouter, FastAPI
-from fastapi.responses import StreamingResponse, FileResponse
+from dotenv import load_dotenv
+from fastapi import APIRouter, FastAPI, HTTPException, Request, Response
 from sqlalchemy import (
     Column,
+    Integer,
     LargeBinary,
     MetaData,
     String,
-    Integer,
     Table,
-    create_engine,
 )
-from sqlalchemy.orm import sessionmaker
-
-from fastapi import Request, Response, HTTPException
 from starlette.status import HTTP_206_PARTIAL_CONTENT
 
-# Database URL (with aiosqlite for async SQLite)
-DATABASE_URL = "sqlite+aiosqlite:///./audio.db"
+load_dotenv()
+
+DATABASE_URL = os.getenv("DATABASE_URL")
 
 # Initialize the database and metadata for SQLAlchemy
 database = Database(DATABASE_URL)
@@ -48,9 +44,7 @@ router = APIRouter()
 async def get_audio_files():
     query = audio_files.select()
     results = await database.fetch_all(query)
-    audio_files_list = [
-        {"id": row["id"], "name": row["filename"]} for row in results
-    ]
+    audio_files_list = [{"id": row["id"], "name": row["filename"]} for row in results]
     return audio_files_list
 
 
@@ -85,9 +79,7 @@ async def post_verify(audio_id: int):
         raise HTTPException(status_code=404, detail="Verified not found")
 
     update_query = (
-        audio_files.update()
-        .where(audio_files.c.id == audio_id)
-        .values(verified=1)
+        audio_files.update().where(audio_files.c.id == audio_id).values(verified=1)
     )
     await database.execute(update_query)
 

@@ -13,6 +13,7 @@ const audioList = document.getElementById("audio-list");
 audioList.addEventListener("click", function (event) {
   if (event.target && event.target.classList.contains("play-btn")) {
     handleMedia(event.target, originalModel, modifiedModel);
+    togglePlayButtons(event.target);
   }
 
   if (event.target && event.target.classList.contains("item")) {
@@ -21,6 +22,8 @@ audioList.addEventListener("click", function (event) {
       originalModel,
       modifiedModel
     );
+    const el = event.target.querySelector(".play-btn");
+    togglePlayButtons(el);
   }
 
   if (event.target && event.target.classList.contains("img")) {
@@ -29,26 +32,28 @@ audioList.addEventListener("click", function (event) {
       originalModel,
       modifiedModel
     );
+    const el = event.target.querySelector(".play-btn");
+    togglePlayButtons(el);
   }
 });
 
-document.addEventListener("click", function (event) {
-  if (event.target.classList.contains("play-btn")) {
-    // Reset all icons
-    document.querySelectorAll(".play-btn").forEach((el) => {
+function togglePlayButtons(element) {
+  // Reset all icons
+  document.querySelectorAll(".play-btn").forEach((el) => {
+    if (el !== element) {
       el.classList.remove("bi-pause-fill");
       el.classList.add("bi-play-fill");
-    });
-
-    // Set clicked icon to pause
-    if (event.target.className.contains("bi-pause-fill")) {
-      event.target.classList.remove("bi-pause-fill");
-      event.target.classList.add("bi-play-fill");
-    } else {
-      event.target.classList.remove("bi-play-fill");
-      event.target.classList.add("bi-pause-fill");
     }
+  });
+
+  // Set clicked icon to pause
+  if (element.className.includes("bi-pause-fill")) {
+    element.classList.remove("bi-pause-fill");
+    element.classList.add("bi-play-fill");
+  } else {
+    element.classList.remove("bi-play-fill");
+    element.classList.add("bi-pause-fill");
   }
-});
+}
 
 loadPage(1);
