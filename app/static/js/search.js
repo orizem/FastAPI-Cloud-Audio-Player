@@ -39,12 +39,16 @@ button.addEventListener("click", () => {
 });
 
 removeButton.addEventListener("click", () => {
+  let isRemovedTags = false;
   wrapper.querySelectorAll(".remove-btn").forEach((el) => {
+    isRemovedTags = true;
     removeTag(el);
   });
 
-  saveCurrentTags();
-  reloadPage(true);
+  if (isRemovedTags) {
+    saveCurrentTags();
+    reloadPage(true);
+  }
 });
 
 input.addEventListener("keydown", (e) => {
