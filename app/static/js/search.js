@@ -4,6 +4,7 @@ import { reloadPage } from "./paging.js";
 const wrapper = document.getElementById("tag-input-wrapper");
 const input = document.getElementById("tag-input");
 const button = document.getElementById("add-tag-btn");
+const removeButton = document.getElementById("remove-all-tags-btn");
 
 function removeTag(el) {
   el.parentElement.remove();
@@ -31,6 +32,15 @@ button.addEventListener("click", () => {
   input.value = "";
   tag.querySelector(".remove-btn").addEventListener("click", function () {
     removeTag(this);
+  });
+
+  saveCurrentTags();
+  reloadPage(true);
+});
+
+removeButton.addEventListener("click", () => {
+  wrapper.querySelectorAll(".remove-btn").forEach((el) => {
+    removeTag(el);
   });
 
   saveCurrentTags();
