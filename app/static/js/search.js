@@ -6,10 +6,10 @@ const input = document.getElementById("tag-input");
 const button = document.getElementById("add-tag-btn");
 const removeButton = document.getElementById("remove-all-tags-btn");
 
-function removeTag(el) {
+function removeTag(el, tags = false, reload = false) {
   el.parentElement.remove();
-  saveCurrentTags();
-  reloadPage();
+  if (tags) saveCurrentTags();
+  if (reload) reloadPage();
 }
 
 function createTag(tag, value) {
@@ -31,7 +31,7 @@ button.addEventListener("click", () => {
   wrapper.insertBefore(tag, input);
   input.value = "";
   tag.querySelector(".remove-btn").addEventListener("click", function () {
-    removeTag(this);
+    removeTag(this, true, true);
   });
 
   saveCurrentTags();
@@ -39,16 +39,12 @@ button.addEventListener("click", () => {
 });
 
 removeButton.addEventListener("click", () => {
-  let isRemovedTags = false;
   wrapper.querySelectorAll(".remove-btn").forEach((el) => {
-    isRemovedTags = true;
     removeTag(el);
   });
 
-  if (isRemovedTags) {
-    saveCurrentTags();
-    reloadPage(true);
-  }
+  saveCurrentTags();
+  reloadPage(true);
 });
 
 input.addEventListener("keydown", (e) => {
@@ -69,7 +65,7 @@ window.addEventListener("DOMContentLoaded", () => {
     createTag(tag, tagText);
     tagWrapper.insertBefore(tag, input);
     tag.querySelector(".remove-btn").addEventListener("click", function () {
-      removeTag(this);
+      removeTag(this, true, true);
     });
   }
 });
