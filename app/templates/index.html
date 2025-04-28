@@ -64,6 +64,15 @@
           <button type="button" class="bi bi-chevron-left prev-btn"></button>
           <button type="button" class="bi bi-chevron-right next-btn"></button>
           <button id="pagination">{{ page }}</button>
+
+          <div id="select-max-items">
+            <label for="max-items-in-page">Max items:</label>
+            <select name="max-items_in_page" id="max-items-in-page">
+              {% for val in MAX_ITEMS_LIST %}
+              <option value="{{ val }}">{{ val }}</option>
+              {% endfor %}
+            </select>
+          </div>
         </div>
 
         <div class="navbar">
@@ -85,13 +94,14 @@
             placeholder="Type and press +"
             class="flex-grow border-none outline-none bg-transparent search-text placeholder-gray-400 text-sm min-w-[100px]"
           />
-          <button id="remove-all-tags-btn"
-            
+          <button
+            id="remove-all-tags-btn"
             class="text-white bg-blue-500 hover:bg-blue-600 rounded-full px-3 py-1 text-sm font-semibold"
           >
             x
           </button>
-          <button id="add-tag-btn"
+          <button
+            id="add-tag-btn"
             class="text-blue-500 bg-white hover:bg-blue-300 rounded-full px-3 py-1 text-sm font-semibold"
           >
             <i class="bi bi-search search-btn" aria-hidden="true"></i>

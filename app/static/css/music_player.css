@@ -95,6 +95,11 @@ body {
   padding: 14px 30px;
 }
 
+.topbar .prev-next-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
 .topbar .prev-next-buttons button {
   color: #7a7a7a;
   cursor: pointer;
@@ -490,4 +495,24 @@ body {
   width: 100%;
   padding-right: 24px;
   padding-bottom: 24px;
+}
+
+#select-max-items {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#select-max-items label {
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+#select-max-items select {
+  margin-bottom: 29px;
+  border-radius: 25px;
+  padding: 5px 0px 5px 5px;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  border: 1px solid var(--text-primary);
+  text-align: center;
 }

@@ -43,3 +43,15 @@ export function loadCurrentAudioIdFromCache() {
   const cached = localStorage.getItem("current_audio_id_verification");
   return cached ? JSON.parse(cached) : null;
 }
+
+export function saveMaxItemsPerPageToCache(max_items) {
+  localStorage.setItem(
+    "max_items_per_page",
+    JSON.stringify(max_items)
+  );
+}
+
+export function loadMaxItemsPerPageFromCache() {
+  const cached = localStorage.getItem("max_items_per_page");
+  return cached ? JSON.parse(cached) : null;
+}

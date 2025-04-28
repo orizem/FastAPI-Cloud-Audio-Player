@@ -2,14 +2,17 @@ import {
   loadTagsFromCache,
   loadVerificationFromCache,
   loadCurrentAudioIdFromCache,
+  loadMaxItemsPerPageFromCache,
+  saveMaxItemsPerPageToCache,
 } from "./localStorage.js";
 
 export async function loadPage(page) {
   const savedTags = loadTagsFromCache();
   const savedVerified = loadVerificationFromCache();
+  const max_items = loadMaxItemsPerPageFromCache();
   const tags = savedTags.join(",");
   const response = await fetch(
-    `/page/${page}?tags=${tags}&verified=${savedVerified}`
+    `/page/${page}?tags=${tags}&verified=${savedVerified}&max_items=${max_items}`
   );
   const data = await response.json();
 
@@ -105,3 +108,17 @@ export function reloadPage(firstPage = false) {
   const currentPage = firstPage ? 1 : parseInt(pagination.dataset.page);
   loadPage(currentPage);
 }
+
+// Max items per page
+function handleMaxItemsChange(event) {
+  const selectedValue = event.target.value;
+
+  saveMaxItemsPerPageToCache(selectedValue);
+  reloadPage();
+}
+
+const select = document.getElementById("max-items-in-page");
+const cache_max_items = loadMaxItemsPerPageFromCache();
+
+select.addEventListener("change", handleMaxItemsChange);
+select.value = cache_max_items ? cache_max_items : 5;
