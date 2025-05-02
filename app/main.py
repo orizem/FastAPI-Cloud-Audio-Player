@@ -45,27 +45,42 @@ async def get_page(request: Request, page: int):
     max_items = request.query_params.get("max_items", default=0)
     tag_list = tags.split(",") if tags else []
 
+    # Base filter
     where_clauses = ["verified = ?"]
     params = [verified]
-    page_size = int(max_items) if int(max_items.replace("null", "0")) > 0 else PAGE_SIZE
 
-    # Floor page size to feet list values
+    # Determine effective page size
+    page_size = int(max_items) if int(max_items.replace("null", "0")) > 0 else PAGE_SIZE
     page_size = min(MAX_ITEMS_LIST, key=lambda x: abs(x - page_size))
 
+    # Tag-driven WHERE logic: subtitles (AND) vs filename (OR)
     if tag_list:
-        tag_conditions = []
-        for tag in tag_list:
-            tag_conditions.append("subtitles LIKE ?")
-            params.append(f"%{tag}%")
-        where_clauses.append(f"({' AND '.join(tag_conditions)})")
+        # subtitles must match all tags (AND)
+        subtitle_conds = ["subtitles LIKE ?" for _ in tag_list]
+        subtitle_params = [f"%{tag}%" for tag in tag_list]
+
+        # filename may match any tag (OR)
+        filename_conds = ["filename LIKE ?" for _ in tag_list]
+        filename_params = [f"%{tag}%" for tag in tag_list]
+
+        # Combine into one composite clause
+        where_clauses.append(
+            "("
+            + " AND ".join(subtitle_conds)
+            + " OR "
+            + " OR ".join(filename_conds)
+            + ")"
+        )
+        params.extend(subtitle_params + filename_params)
 
     where_clause = "WHERE " + " AND ".join(where_clauses)
+    query = f"SELECT COUNT(*) FROM audio_files {where_clause}"
 
     async with aiosqlite.connect(DB_PATH) as conn:
         cursor = await conn.cursor()
 
         # Total count
-        await cursor.execute(f"SELECT COUNT(*) FROM audio_files {where_clause}", params)
+        await cursor.execute(query, params)
         total_documents = (await cursor.fetchone())[0]
 
         max_page = max(ceil(total_documents / page_size), 1)
