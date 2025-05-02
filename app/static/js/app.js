@@ -4,6 +4,7 @@ import { originalModel, modifiedModel } from "./textCompare.js";
 
 import "./wave.js";
 import "./theme.js";
+import "./displayItems.js";
 import "./search.js";
 import "./resizeHandle.js";
 import "./verifiedItems.js";
@@ -11,29 +12,21 @@ import "./verifiedItems.js";
 const audioList = document.getElementById("audio-list");
 
 audioList.addEventListener("click", function (event) {
-  if (event.target && event.target.classList.contains("play-btn")) {
-    handleMedia(event.target, originalModel, modifiedModel);
-    togglePlayButtons(event.target);
-  }
+  const getPlayButton = (target) => {
+    if (target.classList.contains("play-btn")) return target;
+    if (target.classList.contains("item"))
+      return target.querySelector(".play-btn");
+    if (target.classList.contains("img") || target.classList.contains("carousel-container"))
+      return target.parentElement?.querySelector(".play-btn");
+    if (target.classList.contains("hover-carousel"))
+      return target.parentElement?.parentElement?.querySelector(".play-btn");
+    return null;
+  };
 
-  if (event.target && event.target.classList.contains("item")) {
-    handleMedia(
-      event.target.querySelector(".play-btn"),
-      originalModel,
-      modifiedModel
-    );
-    const el = event.target.querySelector(".play-btn");
-    togglePlayButtons(el);
-  }
-
-  if (event.target && event.target.classList.contains("img")) {
-    handleMedia(
-      event.target.parentElement.querySelector(".play-btn"),
-      originalModel,
-      modifiedModel
-    );
-    const el = event.target.querySelector(".play-btn");
-    togglePlayButtons(el);
+  const playBtn = getPlayButton(event.target);
+  if (playBtn) {
+    handleMedia(playBtn, originalModel, modifiedModel);
+    togglePlayButtons(playBtn);
   }
 });
 

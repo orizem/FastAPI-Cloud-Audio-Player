@@ -199,8 +199,9 @@ body {
 
 .playlists .list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fill, 160px);
+  justify-content: start;
+  gap: 15px;
   padding-top: 15px;
 }
 
@@ -212,6 +213,8 @@ body {
   border-radius: 6px;
   cursor: pointer;
   transition: all ease 0.4s;
+  max-height: 214px;
+  height: fit-content;
 }
 
 .playlists .list .item:hover {
@@ -410,8 +413,8 @@ body {
 }
 
 .tooltip {
+  display: initial;
   position: relative;
-  display: inline-block;
   cursor: pointer;
 }
 
@@ -426,7 +429,7 @@ body {
   border-radius: 5px;
   padding: 5px;
   position: absolute;
-  bottom: 130px; /* Position the tooltip above the text */
+  bottom: 115px; /* Position the tooltip above the text */
   left: 15px;
   opacity: 0;
   transition: opacity 0.3s;

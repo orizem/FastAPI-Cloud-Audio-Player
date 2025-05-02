@@ -5,6 +5,7 @@ import {
   loadMaxItemsPerPageFromCache,
   saveMaxItemsPerPageToCache,
 } from "./localStorage.js";
+import {toggleDisplayButton} from "./displayItems.js"
 
 export async function loadPage(page) {
   const savedTags = loadTagsFromCache();
@@ -44,6 +45,9 @@ export async function loadPage(page) {
         </div>
       `;
   });
+
+  const display = localStorage.getItem("display") || "expand";
+  toggleDisplayButton(display);
 
   const audioId = loadCurrentAudioIdFromCache();
   const audio = document.getElementById("audio_id");
