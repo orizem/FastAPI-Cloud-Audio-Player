@@ -1,4 +1,5 @@
 import { saveCurrentAudioIdToCache } from "./localStorage.js";
+import { verificationBtnUpdate } from "./verifiedItems.js";
 
 export async function handleMedia(el, originalModel, modifiedModel) {
   if (!el) return;
@@ -40,6 +41,8 @@ export async function handleMedia(el, originalModel, modifiedModel) {
 
     if (previewTextElement) {
       previewTextElement.textContent = `Playing: ${el.dataset.audioFilename}`;
+
+      verificationBtnUpdate(audioId);
     }
   }
 

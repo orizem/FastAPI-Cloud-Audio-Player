@@ -25,10 +25,7 @@ unverifyBtn.addEventListener("click", async () => {
   if (!source) return;
 
   const audioId = source.src.split("/api/audio/")[1];
-  const verification = await fetch(`/api/verified/${audioId}`);
-  const data = await verification.json();
-
-  if (!audioId || audioId === "#" || data === 1) return;
+  if (!audioId || audioId === "#") return;
 
   try {
     const res = await fetch(`/api/verify/${audioId}`, { method: "POST" });
@@ -38,3 +35,10 @@ unverifyBtn.addEventListener("click", async () => {
     console.error("Error:", err);
   }
 });
+
+export async function verificationBtnUpdate(audioId) {
+  const verification = await fetch(`/api/verified/${audioId}`);
+  const verificationData = await verification.json();
+  const verifyAudioBtn = document.getElementById("verifyAudio");
+  verifyAudioBtn.innerHTML = verificationData == 1 ? "Unverify" : "Verify";
+}

@@ -5,7 +5,8 @@ import {
   loadMaxItemsPerPageFromCache,
   saveMaxItemsPerPageToCache,
 } from "./localStorage.js";
-import {toggleDisplayButton} from "./displayItems.js"
+import { toggleDisplayButton } from "./displayItems.js";
+import { verificationBtnUpdate } from "./verifiedItems.js";
 
 export async function loadPage(page) {
   const savedTags = loadTagsFromCache();
@@ -70,6 +71,8 @@ export async function loadPage(page) {
   currentPlaylist.innerHTML =
     savedVerified == 0 ? "Pending For verification:" : "Verified:";
   totalMatches.innerHTML = `total matches: ${data.total_documents}`;
+
+  verificationBtnUpdate(audioId);
 
   // Update pagination
   const pagination = document.getElementById("pagination");

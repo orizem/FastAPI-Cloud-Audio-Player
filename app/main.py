@@ -7,6 +7,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 from app.api.routes import audio as audio_router
+from app.db import db
 
 PAGE_SIZE = 5
 DB_PATH = "audio.db"
@@ -36,6 +37,12 @@ async def index(request: Request):
 @app.get("/")
 async def home():
     return RedirectResponse(url="/app", status_code=302)
+
+
+@app.get("/upload")
+async def upload():
+    db.upload()
+    return {"msg": "Audio and text data has been uploaded to db."}
 
 
 @app.get("/page/{page}")

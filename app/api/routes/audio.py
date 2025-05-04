@@ -79,7 +79,9 @@ async def post_verify(audio_id: int):
         raise HTTPException(status_code=404, detail="Verified not found")
 
     update_query = (
-        audio_files.update().where(audio_files.c.id == audio_id).values(verified=1)
+        audio_files.update()
+        .where(audio_files.c.id == audio_id)
+        .values(verified=(1 - result["verified"]))
     )
     await database.execute(update_query)
 
