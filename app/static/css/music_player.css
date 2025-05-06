@@ -519,3 +519,35 @@ body {
   border: 1px solid var(--text-primary);
   text-align: center;
 }
+
+.table-container {
+  border: 2px solid var(--text-total-matches);
+  border-radius: 10px;
+  margin-top: 20px;
+  max-height: 50vh;
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-6) transparent;
+  padding-right: 3px; /* creates gap between content and scrollbar */
+}
+
+table#logs-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--text-total-matches);
+  text-align: center;
+  background-color: rgba(var(--text-total-matches-rgb), 0.2);
+}
+
+table#logs-table th,
+table#logs-table td {
+  border: 1px solid var(--text-total-matches);
+  padding: 5px;
+}
+
+table#logs-table th{
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background-color: var(--color-6);
+}

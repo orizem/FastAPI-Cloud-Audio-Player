@@ -115,8 +115,8 @@ FROM {table_name}
         paginated_params = params + [page_size, (page - 1) * page_size]
         await cursor.execute(
             f"""
-SELECT audio_files.id, audio_files.filename{logs_params}
-FROM {table_name}
+SELECT tbl.id, tbl.filename{logs_params}
+FROM ({table_name}) AS tbl
 {where_clause if params else ""}
 LIMIT ? OFFSET ?
 """,

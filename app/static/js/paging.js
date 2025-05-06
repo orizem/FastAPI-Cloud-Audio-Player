@@ -21,12 +21,14 @@ export async function loadPage(page) {
   const data = await response.json();
 
   // Update the content with the new audio files
+  const tableContainer = document.querySelector(".table-container");
   const audioList = document.getElementById("audio-list");
   const logsTable = document.getElementById("logs-table");
   audioList.innerHTML = ""; // Clear current content
   logsTable.innerHTML = ""; // Clear current content
 
   if (isLogs == 0) {
+    tableContainer.style.display = "none";
     if (!data.audio_files) reloadPage(true);
     data.audio_files.forEach((audio) => {
       audioList.innerHTML += `
@@ -72,22 +74,27 @@ export async function loadPage(page) {
     }
     verificationBtnUpdate(audioId);
   } else {
+    tableContainer.style.display = "block";
+
     let html = `
     <div id="playlist-info">
       <h2 id="playlist-title">Pending for verification:</h2>
       <h6 id="playlist-total">total matches: 0</h6>
     </div>
 
-    <table id="logs-table">
-      <tr>
-      <th>ID</th>
-      <th>File Name</th>
-      <th>Verified</th>
-      <th>Audio File ID</th>
-      <th>Action</th>
-      <th>Column Changed</th>
-      <th>Timestamp</th>
-    </tr>`;
+    <div class="table-container">
+      <table id="logs-table">
+        <tr>
+        <th>ID</th>
+        <th>File Name</th>
+        <th>Verified</th>
+        <th>Audio File ID</th>
+        <th>Action</th>
+        <th>Column Changed</th>
+        <th>Timestamp</th>
+      </tr>`;
+
+    if (!data.audio_files) reloadPage(true);
     data.audio_files.forEach((audio) => {
       html += `
         <tr>
@@ -101,7 +108,7 @@ export async function loadPage(page) {
         </tr>
       `;
     });
-    html += `</table> <div class="list" id="audio-list"></div>`;
+    html += `</table></div> <div class="list" id="audio-list"></div>`;
     audioList.parentElement.innerHTML = html;
   }
 
