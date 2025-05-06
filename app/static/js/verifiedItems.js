@@ -1,25 +1,8 @@
-import { saveVerificationToCache } from "./localStorage.js";
 import { reloadPage } from "./paging.js";
 
-const unverifyBtn = document.getElementById("verifyAudio");
-const verifiedNavBtn = document.getElementById("verified-btn");
-const unverifiedNavBtn = document.getElementById("unverified-btn");
+const verifyAudioBtn = document.getElementById("verifyAudio");
 
-verifiedNavBtn.addEventListener("click", function (event) {
-  if (event.target) {
-    saveVerificationToCache(1);
-    reloadPage(true);
-  }
-});
-
-unverifiedNavBtn.addEventListener("click", function (event) {
-  if (event.target) {
-    saveVerificationToCache(0);
-    reloadPage(true);
-  }
-});
-
-unverifyBtn.addEventListener("click", async () => {
+verifyAudioBtn.addEventListener("click", async () => {
   const audio = document.getElementById("audio_id");
   const source = audio?.querySelector("source");
   if (!source) return;

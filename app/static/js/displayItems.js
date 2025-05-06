@@ -22,10 +22,10 @@ export function toggleDisplayButton(display) {
       .querySelectorAll(".item .img")
       .forEach((el) => (el.style.display = "none"));
     document
-      .querySelectorAll(".playlists .list")
+      .querySelectorAll(".display-type .list")
       .forEach((el) => (el.style.gap = "5px"));
     document
-      .querySelectorAll(".playlists .list .item .play .bi")
+      .querySelectorAll(".display-type .list .item .play .bi")
       .forEach(
         (el) => (
           (el.style.top = "14px"),
@@ -41,10 +41,10 @@ export function toggleDisplayButton(display) {
       .querySelectorAll(".item .img")
       .forEach((el) => (el.style.display = ""));
     document
-      .querySelectorAll(".playlists .list")
+      .querySelectorAll(".display-type .list")
       .forEach((el) => (el.style.gap = "15px"));
     document
-      .querySelectorAll(".playlists .list .item .play .bi")
+      .querySelectorAll(".display-type .list .item .play .bi")
       .forEach(
         (el) => (
           (el.style.top = "-60px"),

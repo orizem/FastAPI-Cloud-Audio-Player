@@ -187,17 +187,17 @@ body {
   border: 2px solid var(--bg-button);
 } */
 
-.playlists {
+.display-type {
   padding: 20px 40px;
 }
 
-.playlists h2 {
+.display-type h2 {
   color: var(--text-total-matches);
   font-size: 22px;
   margin-bottom: 20px;
 }
 
-.playlists .list {
+.display-type .list {
   display: grid;
   grid-template-columns: repeat(auto-fill, 160px);
   justify-content: start;
@@ -205,7 +205,7 @@ body {
   padding-top: 15px;
 }
 
-.playlists .list .item {
+.display-type .list .item {
   min-width: 140px;
   width: 160px;
   padding: 15px;
@@ -217,16 +217,16 @@ body {
   height: fit-content;
 }
 
-.playlists .list .item:hover {
+.display-type .list .item:hover {
   background-color: var(--bg-hover);
   color: var(--bg-primary);
 }
 
-.playlists .list .item:hover h4 {
+.display-type .list .item:hover h4 {
   color: var(--bg-primary);
 }
 
-.playlists .list .item img {
+.display-type .list .item img {
   width: 100%;
   border-radius: 6px;
   margin-bottom: 10px;
@@ -236,11 +236,11 @@ body {
   color: var(--text-search);
 }
 
-.playlists .list .item .play {
+.display-type .list .item .play {
   position: relative;
 }
 
-.playlists .list .item .play .bi {
+.display-type .list .item .play .bi {
   position: absolute;
   right: 10px;
   top: -60px;
@@ -251,12 +251,12 @@ body {
   transition: all ease 0.4s;
 }
 
-.playlists .list .item:hover .play .bi {
+.display-type .list .item:hover .play .bi {
   opacity: 1;
   transform: translateY(-20px);
 }
 
-.playlists .list .item h4 {
+.display-type .list .item h4 {
   color: var(--text-primary);
   font-size: 14px;
   margin-bottom: 10px;
@@ -265,14 +265,14 @@ body {
   text-overflow: ellipsis;
 }
 
-.playlists .list .item p {
+.display-type .list .item p {
   color: var(--text-muted);
   font-size: 12px;
   line-height: 20px;
   font-weight: 600;
 }
 
-.playlists hr {
+.display-type hr {
   margin: 70px 0px 0px;
   border-color: var(--text-divider);
 }
@@ -448,7 +448,7 @@ body {
   width: 100%;
 }
 
-.playlists #playlist-info {
+.display-type #playlist-info {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -462,7 +462,7 @@ body {
   background-color: rgba(var(--text-total-matches-rgb), 0.2);
 }
 
-.playlists #playlist-info h2 {
+.display-type #playlist-info h2 {
   margin: 0 15px;
   text-align: center;
 }

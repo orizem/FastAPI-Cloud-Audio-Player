@@ -4,6 +4,7 @@ import {
   loadCurrentAudioIdFromCache,
   loadMaxItemsPerPageFromCache,
   saveMaxItemsPerPageToCache,
+  loadIsLogsDisplayFromCache,
 } from "./localStorage.js";
 import { toggleDisplayButton } from "./displayItems.js";
 import { verificationBtnUpdate } from "./verifiedItems.js";
@@ -11,19 +12,24 @@ import { verificationBtnUpdate } from "./verifiedItems.js";
 export async function loadPage(page) {
   const savedTags = loadTagsFromCache();
   const savedVerified = loadVerificationFromCache();
+  const isLogs = loadIsLogsDisplayFromCache();
   const max_items = loadMaxItemsPerPageFromCache();
   const tags = savedTags.join(",");
   const response = await fetch(
-    `/page/${page}?tags=${tags}&verified=${savedVerified}&max_items=${max_items}`
+    `/page/${page}?tags=${tags}&verified=${savedVerified}&max_items=${max_items}&is_logs=${isLogs}`
   );
   const data = await response.json();
 
   // Update the content with the new audio files
   const audioList = document.getElementById("audio-list");
+  const logsTable = document.getElementById("logs-table");
   audioList.innerHTML = ""; // Clear current content
+  logsTable.innerHTML = ""; // Clear current content
 
-  data.audio_files.forEach((audio) => {
-    audioList.innerHTML += `
+  if (isLogs == 0) {
+    if (!data.audio_files) reloadPage(true);
+    data.audio_files.forEach((audio) => {
+      audioList.innerHTML += `
         <div class="item">
         <img class="img"
           src="https://canto-wp-media.s3.amazonaws.com/app/uploads/2019/11/19191844/audio-file-types-36-768x704.jpg"
@@ -45,24 +51,58 @@ export async function loadPage(page) {
           </div>
         </div>
       `;
-  });
+    });
 
-  const display = localStorage.getItem("display") || "expand";
-  toggleDisplayButton(display);
+    const display = localStorage.getItem("display") || "expand";
+    toggleDisplayButton(display);
 
-  const audioId = loadCurrentAudioIdFromCache();
-  const audio = document.getElementById("audio_id");
-  let el = null;
+    const audioId = loadCurrentAudioIdFromCache();
+    const audio = document.getElementById("audio_id");
+    let el = null;
 
-  if (audioId) {
-    el = document.querySelector(`.play-btn[data-audio-id="${audioId}"]`);
+    if (audioId) {
+      el = document.querySelector(`.play-btn[data-audio-id="${audioId}"]`);
 
-    if (el) {
-      if (!audio.paused) {
-        el.classList.remove("bi-play-fill");
-        el.classList.add("bi-pause-fill");
+      if (el) {
+        if (!audio.paused) {
+          el.classList.remove("bi-play-fill");
+          el.classList.add("bi-pause-fill");
+        }
       }
     }
+    verificationBtnUpdate(audioId);
+  } else {
+    let html = `
+    <div id="playlist-info">
+      <h2 id="playlist-title">Pending for verification:</h2>
+      <h6 id="playlist-total">total matches: 0</h6>
+    </div>
+
+    <table id="logs-table">
+      <tr>
+      <th>ID</th>
+      <th>File Name</th>
+      <th>Verified</th>
+      <th>Audio File ID</th>
+      <th>Action</th>
+      <th>Column Changed</th>
+      <th>Timestamp</th>
+    </tr>`;
+    data.audio_files.forEach((audio) => {
+      html += `
+        <tr>
+          <td>${audio.id}</td>
+          <td>${audio.filename}</td>
+          <td>${audio.verified}</td>
+          <td>${audio.audio_file_id}</td>
+          <td>${audio.action}</td>
+          <td>${audio.column_changed}</td>
+          <td>${audio.timestamp}</td>
+        </tr>
+      `;
+    });
+    html += `</table> <div class="list" id="audio-list"></div>`;
+    audioList.parentElement.innerHTML = html;
   }
 
   const currentPlaylist = document.querySelector("#playlist-title");
@@ -71,8 +111,6 @@ export async function loadPage(page) {
   currentPlaylist.innerHTML =
     savedVerified == 0 ? "Pending For verification:" : "Verified:";
   totalMatches.innerHTML = `total matches: ${data.total_documents}`;
-
-  verificationBtnUpdate(audioId);
 
   // Update pagination
   const pagination = document.getElementById("pagination");
@@ -83,14 +121,15 @@ export async function loadPage(page) {
 
 // Move between pages
 
-function handlePrevPage(el) {
+function handlePrevPage() {
+  const isLogs = 1;
   const pagination = document.getElementById("pagination");
   const currentPage = parseInt(pagination.dataset.page);
   const prevPage = currentPage - 1 > 0 ? currentPage - 1 : 1;
-  loadPage(prevPage);
+  loadPage(prevPage, isLogs);
 }
 
-function handleNextPage(el) {
+function handleNextPage() {
   const pagination = document.getElementById("pagination");
   const currentPage = parseInt(pagination.dataset.page);
   const nextPage =
@@ -99,16 +138,6 @@ function handleNextPage(el) {
       : pagination.dataset.maxPage;
   loadPage(nextPage);
 }
-
-// Handle previous page button
-document.querySelector(".prev-btn").addEventListener("click", function () {
-  handlePrevPage(this);
-});
-
-// Handle next page button
-document.querySelector(".next-btn").addEventListener("click", function () {
-  handleNextPage(this);
-});
 
 export function reloadPage(firstPage = false) {
   const pagination = document.getElementById("pagination");
@@ -123,6 +152,16 @@ function handleMaxItemsChange(event) {
   saveMaxItemsPerPageToCache(selectedValue);
   reloadPage();
 }
+
+// Handle previous page button
+document.querySelector(".prev-btn").addEventListener("click", function () {
+  handlePrevPage();
+});
+
+// Handle next page button
+document.querySelector(".next-btn").addEventListener("click", function () {
+  handleNextPage();
+});
 
 const select = document.getElementById("max-items-in-page");
 const cache_max_items = loadMaxItemsPerPageFromCache();

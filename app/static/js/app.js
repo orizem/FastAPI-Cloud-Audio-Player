@@ -8,6 +8,7 @@ import "./displayItems.js";
 import "./search.js";
 import "./resizeHandle.js";
 import "./verifiedItems.js";
+import "./sidNavBar.js";
 
 const audioList = document.getElementById("audio-list");
 
