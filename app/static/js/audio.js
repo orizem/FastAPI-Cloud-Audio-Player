@@ -79,25 +79,30 @@ function togglePlayButtons(element) {
 export function initAudio() {
   const audioList = document.getElementById("audio-list");
 
-  audioList.addEventListener("click", function (event) {
-    const getPlayButton = (target) => {
-      if (target.classList.contains("play-btn")) return target;
-      if (target.classList.contains("item"))
-        return target.querySelector(".play-btn");
-      if (
-        target.classList.contains("img") ||
-        target.classList.contains("carousel-container")
-      )
-        return target.parentElement?.querySelector(".play-btn");
-      if (target.classList.contains("hover-carousel"))
-        return target.parentElement?.parentElement?.querySelector(".play-btn");
-      return null;
-    };
+  if (!audioList.dataset.bound) {
+    audioList.addEventListener("click", function (event) {
+      const getPlayButton = (target) => {
+        if (target.classList.contains("play-btn")) return target;
+        if (target.classList.contains("item"))
+          return target.querySelector(".play-btn");
+        if (
+          target.classList.contains("img") ||
+          target.classList.contains("carousel-container")
+        )
+          return target.parentElement?.querySelector(".play-btn");
+        if (target.classList.contains("hover-carousel"))
+          return target.parentElement?.parentElement?.querySelector(
+            ".play-btn"
+          );
+        return null;
+      };
 
-    const playBtn = getPlayButton(event.target);
-    if (playBtn) {
-      handleMedia(playBtn, originalModel, modifiedModel);
-      togglePlayButtons(playBtn);
-    }
-  });
+      const playBtn = getPlayButton(event.target);
+      if (playBtn) {
+        handleMedia(playBtn, originalModel, modifiedModel);
+        togglePlayButtons(playBtn);
+      }
+    });
+    audioList.dataset.bound = 'true';
+  }
 }

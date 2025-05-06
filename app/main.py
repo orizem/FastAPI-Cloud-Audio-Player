@@ -8,6 +8,7 @@ from fastapi.templating import Jinja2Templates
 
 from app.api.routes import audio as audio_router
 from app.db import db
+from .utils import update_home_page, update_logs_page, get_page_tab_params
 
 PAGE_SIZE = 5
 DB_PATH = "audio.db"
@@ -50,21 +51,11 @@ async def get_page(request: Request, page: int):
     tags = request.query_params.get("tags", default="")
     verified = request.query_params.get("verified", default=0)
     max_items = request.query_params.get("max_items", default=0)
-    is_logs = request.query_params.get("is_logs", default=0)
+    page_tab = request.query_params.get("page_tab", default=0)
+    page_tab = int(page_tab)
     tag_list = tags.split(",") if tags else []
 
-    logs_params = ""
-    where_clause = ""
-    where_clauses = []
-    params = []
-    table_name = "audio_files"
-
-    if int(is_logs) == 0:
-        where_clauses.append("verified = ?")
-        params.append(verified)
-    else:
-        table_name = "audio_files_history JOIN audio_files ON audio_files.id = audio_files_history.audio_file_id"
-        logs_params = ", verified, audio_file_id, action, column_changed, timestamp"
+    page_tab_params = get_page_tab_params(page_tab, verified, tag_list)
 
     # Determine effective page size
     page_size = int(max_items) if int(max_items.replace("null", "0")) > 0 else PAGE_SIZE
@@ -72,39 +63,33 @@ async def get_page(request: Request, page: int):
 
     # Tag-driven WHERE logic: subtitles (AND) vs filename (OR)
     if tag_list:
-        # subtitles must match all tags (AND)
-        subtitle_conds = []
-        subtitle_params = []
-        if int(is_logs) == 0:
-            subtitle_conds = ["subtitles LIKE ?" for _ in tag_list]
-            subtitle_params = [f"%{tag}%" for tag in tag_list]
-
         # filename may match any tag (OR)
         filename_conds = ["filename LIKE ?" for _ in tag_list]
         filename_params = [f"%{tag}%" for tag in tag_list]
 
         # Combine into one composite clause
-        where_clauses.append(
+        page_tab_params["where_clauses"].append(
             "("
-            + (" AND ".join(subtitle_conds) + " OR " if int(is_logs) == 0 else "")
+            + page_tab_params["joined_subtitle_conds"]
             + " OR ".join(filename_conds)
             + ")"
         )
-        params.extend(subtitle_params + filename_params)
+        page_tab_params["params"].extend(
+            page_tab_params["subtitle_params"] + filename_params
+        )
 
-    # if int(is_logs) == 0:
-    where_clause = "WHERE " + " AND ".join(where_clauses)
+    where_clause = "WHERE " + " AND ".join(page_tab_params["where_clauses"])
 
     query = f"""
 SELECT COUNT(*) 
-FROM {table_name}
-{where_clause if params else ""}"""
+FROM {page_tab_params['table_name']}
+{where_clause if page_tab_params['params'] else ""}"""
 
     async with aiosqlite.connect(DB_PATH) as conn:
         cursor = await conn.cursor()
 
         # Total count
-        await cursor.execute(query, params)
+        await cursor.execute(query, page_tab_params["params"])
         total_documents = (await cursor.fetchone())[0]
 
         max_page = max(ceil(total_documents / page_size), 1)
@@ -112,12 +97,15 @@ FROM {table_name}
             return RedirectResponse(url=f"/{max_page}", status_code=302)
 
         # Paginated result
-        paginated_params = params + [page_size, (page - 1) * page_size]
+        paginated_params = page_tab_params["params"] + [
+            page_size,
+            (page - 1) * page_size,
+        ]
         await cursor.execute(
             f"""
-SELECT tbl.id, tbl.filename{logs_params}
-FROM ({table_name}) AS tbl
-{where_clause if params else ""}
+SELECT tbl.id, tbl.filename{page_tab_params['logs_params']}
+FROM ({page_tab_params['table_name']}) AS tbl
+{where_clause if page_tab_params['params'] else ""}
 LIMIT ? OFFSET ?
 """,
             paginated_params,
@@ -129,25 +117,10 @@ LIMIT ? OFFSET ?
         "MAX_PAGE": max_page,
         "total_documents": total_documents,
     }
-    if int(is_logs) == 0:
-        res.update(
-            {"audio_files": [{"id": row[0], "filename": row[1]} for row in audio_files]}
-        )
+    if page_tab == 0:
+        res = update_home_page(res, audio_files)
+    elif page_tab == 1:
+        res = update_logs_page(res, audio_files)
     else:
-        res.update(
-            {
-                "audio_files": [
-                    {
-                        "id": row[0],
-                        "filename": row[1],
-                        "verified": row[2],
-                        "audio_file_id": row[3],
-                        "action": row[4],
-                        "column_changed": row[5],
-                        "timestamp": row[6],
-                    }
-                    for row in audio_files
-                ]
-            }
-        )
+        res = update_home_page(res, audio_files)
     return JSONResponse(res)

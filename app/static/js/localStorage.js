@@ -57,11 +57,11 @@ export function loadMaxItemsPerPageFromCache() {
 }
 
 
-export function saveIsLogsDisplayToCache(verification) {
-  localStorage.setItem("is_logs_display", JSON.stringify(verification));
+export function savePageTabToCache(verification) {
+  localStorage.setItem("page_tab", JSON.stringify(verification));
 }
 
-export function loadIsLogsDisplayFromCache() {
-  const cached = localStorage.getItem("is_logs_display");
+export function loadPageTabFromCache() {
+  const cached = localStorage.getItem("page_tab");
   return cached ? JSON.parse(cached) : 0;
 }
