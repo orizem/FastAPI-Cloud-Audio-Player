@@ -38,7 +38,13 @@ FastAPI Cloud Audio Player is a cloud-native audio streaming service built with 
    pip install -r requirements.txt
    ```
 
-4. **Initialize the database** (optional)
+4. **Environment variables**
+
+   ```ini
+   DATABASE_URL="sqlite+aiosqlite:///./audio.db"
+   ```
+
+5. **Initialize the database** (optional)
 
    ```bash
    sqlite3 audio.db < app/schema.sql
