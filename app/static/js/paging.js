@@ -6,6 +6,7 @@ import {
   saveMaxItemsPerPageToCache,
   loadIsLogsDisplayFromCache,
 } from "./localStorage.js";
+import { initAudio } from "./audio.js";
 import { toggleDisplayButton } from "./displayItems.js";
 import { verificationBtnUpdate } from "./verifiedItems.js";
 
@@ -28,6 +29,8 @@ export async function loadPage(page) {
   logsTable.innerHTML = ""; // Clear current content
 
   if (isLogs == 0) {
+    initAudio();
+    
     tableContainer.style.display = "none";
     if (!data.audio_files) reloadPage(true);
     data.audio_files.forEach((audio) => {
